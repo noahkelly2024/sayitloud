@@ -83,19 +83,19 @@ app.post('/posts/:postId/comment', async (req, res) => {
     }
 });
 
-// Route to render individual post details
 app.get('/posts/:id', async (req, res) => {
     try {
-        const post = await Post.findById(req.params.id); // Use the correct model name
+        const post = await Post.findById(req.params.id); // Ensure you're using the correct model name
         if (!post) {
             return res.status(404).send('Post not found');
         }
-        res.render('post', { post });
+        res.render('post', { post: post });
     } catch (err) {
         console.error(err);
         res.status(500).send("Error retrieving post");
     }
 });
+
 
 // Route to handle reply submissions
 app.post('/posts/:postId/comments/:commentId/reply', async (req, res) => {
@@ -116,6 +116,25 @@ app.post('/posts/:postId/comments/:commentId/reply', async (req, res) => {
     } catch (err) {
         console.log(err);
         res.status(500).send("Error saving reply");
+    }
+});
+
+// Route to handle comment submissions
+app.post('/posts/:postId/comment', async (req, res) => {
+    const postId = req.params.postId;
+    const newComment = {
+        text: req.body.commentText,
+        author: req.body.commentAuthor || "Anonymous" // Set a default author
+    };
+
+    try {
+        await Post.findByIdAndUpdate(postId, {
+            $push: { comments: newComment }
+        });
+        res.redirect(`/posts/${postId}`); // Redirect back to the post page
+    } catch (err) {
+        console.log(err);
+        res.status(500).send("Error saving comment");
     }
 });
 
