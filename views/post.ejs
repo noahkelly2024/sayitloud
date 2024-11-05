@@ -147,23 +147,27 @@
             .then(data => {
                 replyInput.value = ''; // Reset input field
 
-                const replyList = document.querySelector(`#reply-list-${replyListId}`);
-                const newReplyItem = document.createElement('li');
-                newReplyItem.innerHTML = `<strong>${data.replyAuthor}:</strong> <em>${data.replyText}</em>`;
-                newReplyItem.innerHTML += `
-                    <div class="reply-input-container" style="display: inline;">
-                        <button class="reply-button" onclick="toggleReplyBox('${postId}', '${commentId}', 'reply', '${data.replyId}')">Reply</button>
-                    </div>
-                    <div class="reply-input-container" id="reply-input-${postId}-${commentId}-${data.replyId}" style="display: none;">
-                        <input type="text" class="reply-input" placeholder="Your reply here...">
-                        <button class="submit-reply-button" onclick="submitReply('${postId}', '${commentId}', 'reply', '${data.replyId}')">Submit</button>
-                    </div>`;
-                replyList.appendChild(newReplyItem);
+                // Delay the DOM manipulation to ensure it executes after the reply list is rendered
+                setTimeout(() => {
+                    const replyList = document.querySelector(`#reply-list-${replyListId}`);
+                    const newReplyItem = document.createElement('li');
+                    newReplyItem.innerHTML = `<strong>${data.replyAuthor}:</strong> <em>${data.replyText}</em>`;
+                    newReplyItem.innerHTML += `
+                        <div class="reply-input-container" style="display: inline;">
+                            <button class="reply-button" onclick="toggleReplyBox('${postId}', '${commentId}', 'reply', '${data.replyId}')">Reply</button>
+                        </div>
+                        <div class="reply-input-container" id="reply-input-${postId}-${commentId}-${data.replyId}" style="display: none;">
+                            <input type="text" class="reply-input" placeholder="Your reply here...">
+                            <button class="submit-reply-button" onclick="submitReply('${postId}', '${commentId}', 'reply', '${data.replyId}')">Submit</button>
+                        </div>`;
+                    replyList.appendChild(newReplyItem);
+                }, 100); // 100 milliseconds delay
             })
             .catch((error) => {
                 console.error('Error:', error);
             });
         }
+
     </script>
 </body>
 </html>
