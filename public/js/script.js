@@ -47,42 +47,56 @@ function toggleReplyBox(postId, commentId, replyId = '') {
     replyInputContainer.style.display = replyInputContainer.style.display === 'none' ? 'block' : 'none';
 }
 
-function submitReply(postId, commentId) {
-    const replyInput = document.querySelector(`#reply-input-${postId}-${commentId} .reply-input`);
-    const replyText = replyInput.value;
+document.addEventListener("DOMContentLoaded", () => {
+    function submitReply(postId, commentId) {
+        const replyInput = document.querySelector(`#reply-input-${postId}-${commentId} .reply-input`);
+        
+        // Verify that replyInput exists before accessing its value
+        if (!replyInput) {
+            console.error(`Reply input not found for comment ${commentId}`);
+            return;
+        }
 
-    if (replyText.trim() === "") {
-        alert("Reply cannot be empty!");
-        return;
+        const replyText = replyInput.value;
+        if (replyText.trim() === "") {
+            alert("Reply cannot be empty!");
+            return;
+        }
+
+        fetch(`/posts/${postId}/comment/${commentId}/reply`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                replyText: replyText,
+                replyAuthor: "Anonymous"
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            replyInput.value = ''; // Reset input field
+
+            // Small delay before appending reply to handle potential timing issues
+            setTimeout(() => {
+                const replyList = document.querySelector(`#reply-list-${commentId}`);
+                
+                // Check if replyList exists before trying to append
+                if (replyList) {
+                    const newReplyItem = document.createElement('li');
+                    newReplyItem.innerHTML = `<strong>${data.replyAuthor}:</strong> ${data.replyText}`;
+                    replyList.appendChild(newReplyItem);
+                } else {
+                    console.error(`Reply list not found for comment ${commentId}`);
+                }
+            }, 100); // Adjust delay if needed
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
     }
 
-    fetch(`/posts/${postId}/comment/${commentId}/reply`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            replyText: replyText,
-            replyAuthor: "Anonymous"
-        }),
-    })
-    .then(response => response.json())
-    .then(data => {
-        replyInput.value = ''; // Reset input field
+    // Attach submitReply to global scope if needed, or use it within DOM event handlers
+    window.submitReply = submitReply;
+});
 
-        // Wait for a small delay before trying to append the reply
-        setTimeout(() => {
-            const replyList = document.querySelector(`#reply-list-${commentId}`);
-            if (replyList) {
-                const newReplyItem = document.createElement('li');
-                newReplyItem.innerHTML = `<strong>${data.replyAuthor}:</strong> ${data.replyText}`;
-                replyList.appendChild(newReplyItem);
-            } else {
-                console.error(`Reply list not found for comment ${commentId}`);
-            }
-        }, 100); // 100ms delay before trying to append the reply
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
-}
