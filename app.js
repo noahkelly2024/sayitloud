@@ -106,16 +106,15 @@ app.post('/posts/:postId/comment/:commentId/reply', async (req, res) => {
         const comment = post.comments.id(commentId); // Find the comment by ID
         comment.replies.push(newReply); // Add the reply to the comment
         await post.save();
-        // Return the newly added reply's data
-        res.json({
-            replyAuthor: newReply.author,
-            replyText: newReply.text
-        });
+        
+        // Return the reply author and text along with a generated replyId
+        res.json({ replyAuthor: newReply.author, replyText: newReply.text, replyId: newReply._id });
     } catch (err) {
         console.log(err);
         res.status(500).send("Error saving reply");
     }
 });
+
 
 // Route to display individual posts
 app.get('/posts/:id', async (req, res) => {
