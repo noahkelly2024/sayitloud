@@ -1,60 +1,64 @@
+/* styles.css */
+
 body {
-    background-color: #f0f0f0; /* Light gray background */
     font-family: Arial, sans-serif;
+    background-color: #f4f4f4; /* Light background color */
     margin: 0;
-    padding: 0;
+    padding: 20px;
 }
 
 h1, h2 {
-    text-align: center; /* Center header text */
+    color: #333; /* Darker text color for headings */
 }
 
 .form-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 20px auto;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #fff; /* White background for form container */
+    border: 1px solid #ccc; /* Light gray border */
+    border-radius: 5px; /* Rounded corners */
 }
 
-input[type="text"] {
-    width: 300px; /* Width of the input field */
-    padding: 10px; /* Padding for the input */
-    margin: 10px 0; /* Margin for spacing */
-    border: 2px solid #007BFF; /* Blue border */
-    border-radius: 5px; /* Rounded corners */
-    font-size: 16px; /* Font size */
+form {
+    display: flex; /* Flexbox for form layout */
+    flex-direction: column; /* Stack form elements vertically */
 }
 
-button {
-    padding: 10px 20px; /* Padding for the button */
-    background-color: #007BFF; /* Blue background */
-    color: white; /* White text */
-    border: none; /* No border */
+form input[type="text"] {
+    padding: 10px; /* Padding for text input */
+    border: 1px solid #ccc; /* Light gray border */
     border-radius: 5px; /* Rounded corners */
+    margin-bottom: 10px; /* Space between input and button */
+}
+
+form button {
+    padding: 10px;
+    border: none; /* Remove default button border */
+    border-radius: 5px;
+    background-color: #007BFF; /* Blue button color */
+    color: white; /* White text color */
     cursor: pointer; /* Pointer cursor on hover */
-    font-size: 16px; /* Font size */
 }
 
-button:hover {
+form button:hover {
     background-color: #0056b3; /* Darker blue on hover */
 }
 
 ul {
-    list-style-type: none; /* Remove bullet points */
-    padding: 0; /* Remove padding */
+    list-style-type: none; /* Remove default bullets */
+    padding: 0; /* Remove default padding */
 }
 
-li {
-    background: white; /* White background for each post */
-    border: 1px solid #ccc; /* Light gray border */
-    border-radius: 5px; /* Rounded corners */
-    margin: 10px auto; /* Center and space posts */
-    padding: 10px; /* Padding inside posts */
-    width: 80%; /* Width of posts */
-    transition: background 0.3s; /* Smooth background change */
+ul li {
+    margin: 10px 0; /* Space between list items */
 }
 
-li:hover {
-    background: #f1f1f1; /* Light gray on hover */
-    cursor: pointer; /* Pointer cursor on hover */
+ul li a {
+    text-decoration: none; /* Remove underline from links */
+    color: #007BFF; /* Link color */
+    font-weight: bold; /* Bold link text */
+}
+
+ul li a:hover {
+    color: #0056b3; /* Darker blue on link hover */
 }

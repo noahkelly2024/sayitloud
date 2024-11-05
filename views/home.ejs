@@ -9,21 +9,21 @@
 <body>
 
     <div class="form-container">
-        <form action="/new-post" method="POST"> <!-- Update action to match your post route -->
+        <h1>Submit Your Text</h1>
+        <form action="/new-post" method="POST">
             <input type="text" name="title" placeholder="Enter post title" required>
-            <textarea name="content" placeholder="Enter your content" required></textarea>
+            <textarea name="content" placeholder="Enter your message" required></textarea>
             <button type="submit">Submit</button>
         </form>
     </div>
     
-    <h1>Submitted Posts:</h1>
-    
-    <h2>All Posts:</h2>
+    <h2>Submitted Posts:</h2>
     <ul>
         <% posts.forEach(function(post) { %>
             <li><a href="/posts/<%= post._id %>"><%= post.title %></a></li> <!-- Link to individual post -->
         <% }); %>
     </ul>
-    
+
 </body>
 </html>
+
