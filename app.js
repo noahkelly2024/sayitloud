@@ -46,6 +46,12 @@ app.get('/', async (req, res) => {
     }
   });
   
+// About page route
+app.get('/about', (req, res) => {
+    res.render('about'); // Render the 'about.ejs' view
+});
+
+
 // Handle form submission
 app.post('/submit', async (req, res) => {
     const messageContent = req.body.text;
