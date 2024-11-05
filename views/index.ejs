@@ -19,12 +19,12 @@
     </div>
 
     <h2>Submitted Texts:</h2>
-    <ul>
-        <!-- Display each submitted text -->
-        <% submittedTexts.forEach(function(text) { %>
-            <li><%= text %></li>
-        <% }); %>
-    </ul>
+<ul>
+    <% submittedTexts.forEach(function(message) { %>
+        <li><%= message.content %></li>
+    <% }); %>
+</ul>
+
 
 </body>
 </html>
