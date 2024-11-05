@@ -1,31 +1,19 @@
 body {
-    font-family: Arial, sans-serif;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  h1 {
-    color: #333;
-  }
-  
-  ul {
-    list-style-type: none;
-  }
-  
-  li {
-    margin: 10px 0;
+    background-color: #391b7a; /* Replace 'lightblue' with any color you like */
+}
+.form-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px; /* Adjust as needed */
+}
+/* Optional: Style the input and button */
+form input[type="text"] {
     padding: 10px;
-    border: 1px solid #ddd;
-  }
-  
-  a {
-    color: #007bff;
-    text-decoration: none;
-  }
-  
-  form label {
-    display: block;
-    margin-top: 10px;
-  }
-  
+    font-size: 16px;
+    margin-right: 5px;
+}
+
+form button {
+    padding: 10px 15px;
+    font-size: 16px;
+}
