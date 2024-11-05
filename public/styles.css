@@ -98,6 +98,41 @@ form button {
     margin-bottom: 10px; /* Space below the input container */
 }
 
+.reply-input-container {
+    display: flex; /* Align input and button inline */
+    margin-top: 5px;
+}
+
+.reply-input {
+    width: 80%; /* Adjust width of reply input */
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 5px;
+}
+
+.reply-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.reply-button:hover {
+    background-color: #0056b3;
+}
+
+.submit-comment-button, .submit-reply-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
 ul {
     list-style-type: none; /* Remove default bullets */
     padding: 0; /* Remove default padding */
