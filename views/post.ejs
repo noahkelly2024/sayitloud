@@ -10,26 +10,26 @@
 
     <div class="form-container">
         <h1><%= post.title %></h1>
-        <p><%= post.content %></p>
-        <p2>Posted on: <%= post.createdAt.toDateString() %></p2>
+        <p2><%= post.content %></p2>
+        <p>Posted on: <%= post.createdAt.toDateString() %></p>
         
         <h2>Comments:</h2>
         <ul id="comments-list-<%= post._id %>">
             <% post.comments.forEach(function(comment) { %>
-                <li>
+                <li id="comment-<%= comment._id %>">
                     <%= comment.author %>: <%= comment.text %>
                     <button class="reply-button" onclick="toggleReplyInput('<%= post._id %>', '<%= comment._id %>')">Reply</button>
                     <div class="reply-input-container" id="reply-input-<%= post._id %>-<%= comment._id %>" style="display: none;">
                         <input type="text" class="reply-input" placeholder="Your reply here...">
                         <button class="submit-reply-button" onclick="submitReply('<%= post._id %>', '<%= comment._id %>')">Submit</button>
                     </div>
-                    <% if (comment.replies) { %>
-                        <ul>
+                    <ul id="replies-list-<%= comment._id %>">
+                        <% if (comment.replies) { %>
                             <% comment.replies.forEach(function(reply) { %>
                                 <li><%= reply.author %>: <%= reply.text %></li>
                             <% }); %>
-                        </ul>
-                    <% } %>
+                        <% } %>
+                    </ul>
                 </li>
             <% }); %>
         </ul>
@@ -74,11 +74,13 @@
                 commentInput.value = '';
                 const commentsList = document.querySelector(`#comments-list-${postId}`);
                 const newCommentItem = document.createElement('li');
+                newCommentItem.id = `comment-${data.commentId}`;
                 newCommentItem.innerHTML = `${data.commentAuthor}: ${commentText} <button class="reply-button" onclick="toggleReplyInput('${postId}', '${data.commentId}')">Reply</button>`;
                 newCommentItem.innerHTML += `<div class="reply-input-container" id="reply-input-${postId}-${data.commentId}" style="display: none;">
                                                 <input type="text" class="reply-input" placeholder="Your reply here...">
                                                 <button class="submit-reply-button" onclick="submitReply('${postId}', '${data.commentId}')">Submit</button>
                                              </div>`;
+                newCommentItem.innerHTML += `<ul id="replies-list-${data.commentId}"></ul>`; // Prepare an empty replies list
                 commentsList.appendChild(newCommentItem);
             })
             .catch((error) => console.error('Error:', error));
@@ -109,17 +111,10 @@
             })
             .then(data => {
                 replyInput.value = '';
-                const commentsList = document.querySelector(`#comments-list-${postId}`);
-                const commentItem = Array.from(commentsList.children).find(li => li.textContent.includes(commentId));
-                const replyList = commentItem.querySelector('ul') || document.createElement('ul');
-                
-                if (!commentItem.querySelector('ul')) {
-                    commentItem.appendChild(replyList);
-                }
-
+                const repliesList = document.querySelector(`#replies-list-${commentId}`);
                 const newReplyItem = document.createElement('li');
                 newReplyItem.innerHTML = `${data.replyAuthor}: ${replyText}`;
-                replyList.appendChild(newReplyItem);
+                repliesList.appendChild(newReplyItem); // Append new reply to replies list
             })
             .catch((error) => console.error('Error:', error));
         }

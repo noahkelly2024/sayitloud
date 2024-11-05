@@ -109,6 +109,7 @@ app.post('/posts/:postId/comment/:commentId/reply', async (req, res) => {
 });
 
 
+
 app.get('/posts/:id', async (req, res) => {
     try {
         const post = await Post.findById(req.params.id); // Ensure you're using the correct model name
