@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-
+const path = require('path');
 const app = express();
 
 // Set up EJS as the template engine
@@ -62,12 +62,6 @@ app.post('/new-post', (req, res) => {
       }
     });
   });
-
-// Route for the main page
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html')); // Change to your main HTML file
-  });
-  
 
 // ROUTES ^^^
 
