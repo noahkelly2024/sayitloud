@@ -5,30 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simple Text App</title>
     <link rel="stylesheet" href="/styles.css">
-    <nav>
-        <a href="/">Home</a>
-        <a href="/about">About</a>
-    </nav>
+    <a href="/">Home</a>
+    <a href="/about">About</a>
 </head>
 <body>
-
-    <h1>Submit Your Text</h1>
-
     <div class="form-container">
-        <!-- Single form for submission -->
-        <form action="/submit" method="POST">
-            <input type="text" name="text" placeholder="Enter your message" required>
-            <button type="submit">Submit</button>
+        <form action="/new-post" method="POST">
+            <input type="text" name="title" placeholder="Post Title" required>
+            <textarea name="content" placeholder="What's on your mind?" required></textarea>
+            <button type="submit">Submit Post</button>
         </form>
     </div>
-
-    <h2>Submitted Texts:</h2>
-<ul>
-    <% submittedTexts.forEach(function(message) { %>
-        <li><%= message.content %></li>
-    <% }); %>
-</ul>
-
-
+    
+    <h2>Posts:</h2>
+    <ul>
+        <% posts.forEach(function(post) { %>
+            <li>
+                <h3><%= post.title %></h3>
+                <p><%= post.content %></p>
+                
+                <h4>Comments:</h4>
+                <ul>
+                    <% post.comments.forEach(function(comment) { %>
+                        <li><strong><%= comment.author %>:</strong> <%= comment.text %></li>
+                    <% }); %>
+                </ul>
+                
+                <form action="/posts/<%= post._id %>/comment" method="POST">
+                    <input type="text" name="commentAuthor" placeholder="Your name (optional)">
+                    <input type="text" name="commentText" placeholder="Add a comment" required>
+                    <button type="submit">Comment</button>
+                </form>
+            </li>
+        <% }); %>
+    </ul>
 </body>
 </html>

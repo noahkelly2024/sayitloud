@@ -26,14 +26,21 @@ mongoose.connection.once('open', () => {
   console.log("Connected to MongoDB!");
 });
 
-// Define a schema and model for messages
-const messageSchema = new mongoose.Schema({
+// Define a schema and model for forum posts
+const commentSchema = new mongoose.Schema({
+    text: String,
+    author: String,
+});
+
+const postSchema = new mongoose.Schema({
+    title: String,
     content: String,
-  });
-  
-  const Message = mongoose.model('Message', messageSchema);
-  
-let submittedTexts = []; // Array to store submitted texts
+    comments: [commentSchema] // Add comments as an array of commentSchema
+});
+
+const Post = mongoose.model('Post', postSchema);
+
+// let submittedTexts = []; // Array to store submitted texts
 
 // Home route
 app.get('/', async (req, res) => {
@@ -51,24 +58,58 @@ app.get('/about', (req, res) => {
     res.render('about'); // Render the 'about.ejs' view
 });
 
-
-// Handle form submission
-app.post('/submit', async (req, res) => {
-    const messageContent = req.body.text;
-  
-    // Create a new message instance and save it to the database
-    const newMessage = new Message({
-      content: messageContent,
+// Route to handle new post submissions
+app.post('/new-post', async (req, res) => {
+    const newPost = new Post({
+        title: req.body.title,
+        content: req.body.content,
     });
-  
+
     try {
-      await newMessage.save();
-      res.redirect('/');
-    } catch (error) {
-      console.error("Error saving message:", error);
-      res.status(500).send("Failed to save message.");
+        await newPost.save();
+        res.redirect('/');
+    } catch (err) {
+        console.log(err);
+        res.status(500).send("Error saving post");
     }
-  });
+});
+
+// Route to handle comment submissions
+app.post('/posts/:postId/comment', async (req, res) => {
+    const postId = req.params.postId;
+    const newComment = {
+        text: req.body.commentText,
+        author: req.body.commentAuthor || "Anonymous" // Set a default author
+    };
+
+    try {
+        await Post.findByIdAndUpdate(postId, {
+            $push: { comments: newComment }
+        });
+        res.redirect('/');
+    } catch (err) {
+        console.log(err);
+        res.status(500).send("Error saving comment");
+    }
+});
+
+// // Handle form submission
+// app.post('/submit', async (req, res) => {
+//     const messageContent = req.body.text;
+  
+//     // Create a new message instance and save it to the database
+//     const newMessage = new Message({
+//       content: messageContent,
+//     });
+  
+//     try {
+//       await newMessage.save();
+//       res.redirect('/');
+//     } catch (error) {
+//       console.error("Error saving message:", error);
+//       res.status(500).send("Failed to save message.");
+//     }
+//   });
   
 
 // Start the server
