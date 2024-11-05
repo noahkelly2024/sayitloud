@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/forumDB')
+mongoose.connect('mongodb://localhost:27017/forumDB', { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('Connected to MongoDB!'))
     .catch(err => console.error('Could not connect to MongoDB:', err));
 
@@ -71,7 +71,7 @@ app.post('/posts/:postId/comment', async (req, res) => {
         await Post.findByIdAndUpdate(postId, {
             $push: { comments: newComment }
         });
-        res.redirect('/');
+        res.redirect(`/posts/${postId}`); // Redirect back to the post page
     } catch (err) {
         console.log(err);
         res.status(500).send("Error saving comment");
@@ -81,7 +81,7 @@ app.post('/posts/:postId/comment', async (req, res) => {
 // Route to render individual post details
 app.get('/posts/:id', async (req, res) => {
     try {
-        const post = await Message.findById(req.params.id); // Use your model name
+        const post = await Post.findById(req.params.id); // Use the correct model name
         if (!post) {
             return res.status(404).send('Post not found');
         }
@@ -91,7 +91,6 @@ app.get('/posts/:id', async (req, res) => {
         res.status(500).send("Error retrieving post");
     }
 });
-
 
 // Start the server
 app.listen(3000, () => {
