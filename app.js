@@ -79,12 +79,13 @@ app.post('/posts/:postId/comment', async (req, res) => {
         await Post.findByIdAndUpdate(postId, {
             $push: { comments: newComment }
         });
-        res.redirect(`/posts/${postId}`); // Redirect back to the post page
+        res.status(200).json({ message: 'Comment added successfully', commentAuthor: newComment.author, commentText: newComment.text }); // Send success response
     } catch (err) {
         console.log(err);
         res.status(500).send("Error saving comment");
     }
 });
+
 
 app.get('/posts/:id', async (req, res) => {
     try {

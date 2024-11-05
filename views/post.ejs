@@ -7,6 +7,7 @@
     <title><%= post.title %></title>
 </head>
 <body>
+
     <div class="form-container">
         <h1><%= post.title %></h1>
         <p><%= post.content %></p>
@@ -25,13 +26,17 @@
         </div>
     
         <h2>Comments:</h2>
-        <ul>
+        <ul id="comments-list-<%= post._id %>">
             <% post.comments.forEach(function(comment) { %>
-                <li>
-                    <strong><%= comment.author %>:</strong> <%= comment.text %>
-                </li>
+                <li><%= comment.author %>: <%= comment.text %></li>
             <% }); %>
         </ul>
+        
+        <div class="comment-input-container" id="comment-input-<%= post._id %>">
+            <input type="text" class="comment-input" placeholder="Your comment here...">
+            <button class="submit-comment-button" onclick="submitComment('<%= post._id %>')">Submit</button>
+        </div>
+        
     </div>
     
     <script>
@@ -40,43 +45,46 @@
             commentInputContainer.style.display = commentInputContainer.style.display === 'none' ? 'block' : 'none';
         }
     
-function submitComment(postId) {
-    const commentInput = document.querySelector(`#comment-input-${postId} .comment-input`);
-    const commentText = commentInput.value;
-    
-    if (commentText.trim() === "") {
-        alert("Comment cannot be empty!"); // Optional: alert if input is empty
-        return;
-    }
+        function submitComment(postId) {
+            const commentInput = document.querySelector(`#comment-input-${postId} .comment-input`);
+            const commentText = commentInput.value;
 
-    // Make a POST request to submit the comment
-    fetch(`/posts/${postId}/comment`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            commentText: commentText,
-            commentAuthor: "Anonymous" // You can modify this to collect user info if needed
-        }),
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error("Network response was not ok");
+            if (commentText.trim() === "") {
+                alert("Comment cannot be empty!"); // Optional: alert if input is empty
+                return;
+            }
+
+            // Make a POST request to submit the comment
+            fetch(`/posts/${postId}/comment`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    commentText: commentText,
+                    commentAuthor: "Anonymous" // You can modify this to collect user info if needed
+                }),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Success:', data);
+                commentInput.value = ''; // Reset input field after submission
+
+                // Create a new list item for the comment
+                const commentsList = document.querySelector(`#comments-list-${postId}`);
+                const newCommentItem = document.createElement('li');
+                newCommentItem.textContent = `${data.commentAuthor}: ${commentText}`;
+                commentsList.appendChild(newCommentItem); // Add the new comment to the list
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
         }
-        return response.json();
-    })
-    .then(data => {
-        console.log('Success:', data);
-        commentInput.value = ''; // Reset input field after submission
-        // Optionally, you can re-fetch the post to update the comments list
-        // or append the new comment to the list dynamically
-        window.location.reload(); // Reload the page to see new comment
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
-}
     </script>
 
 </body>
