@@ -120,6 +120,7 @@ app.post('/posts/:postId/comments/:commentId/reply', async (req, res) => {
 });
 
 // Route to handle new comment submissions
+// Route to handle comment submissions
 app.post('/posts/:postId/comment', async (req, res) => {
     const postId = req.params.postId;
     const newComment = {
@@ -128,10 +129,11 @@ app.post('/posts/:postId/comment', async (req, res) => {
     };
 
     try {
+        // Use findByIdAndUpdate to push the new comment into the comments array
         await Post.findByIdAndUpdate(postId, {
-            $push: { comments: newComment } // Add the new comment to the post
+            $push: { comments: newComment }
         });
-        res.redirect(`/posts/${postId}`); // Redirect back to the post page
+        res.status(200).json({ message: 'Comment added successfully' }); // Send success response
     } catch (err) {
         console.log(err);
         res.status(500).send("Error saving comment");

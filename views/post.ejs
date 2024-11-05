@@ -42,16 +42,42 @@
         }
     
         function submitComment(postId) {
-            const commentInput = document.querySelector(`#comment-input-${postId} .comment-input`);
-            const commentText = commentInput.value;
-            
-            // Here you would typically send the comment to your server
-            // For example, using fetch or AJAX to submit the comment
-            console.log(`Comment for post ${postId}: ${commentText}`);
-            
-            // Reset input field after submission
-            commentInput.value = '';
+    const commentInput = document.querySelector(`#comment-input-${postId} .comment-input`);
+    const commentText = commentInput.value;
+    
+    if (commentText.trim() === "") {
+        alert("Comment cannot be empty!"); // Optional: alert if input is empty
+        return;
+    }
+
+    // Make a POST request to submit the comment
+    fetch(`/posts/${postId}/comment`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            commentText: commentText,
+            commentAuthor: "Anonymous" // You can modify this to collect user info if needed
+        }),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
         }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Success:', data);
+        commentInput.value = ''; // Reset input field after submission
+        // Optionally, you can re-fetch the post to update the comments list
+        // or append the new comment to the list dynamically
+        window.location.reload(); // Reload the page to see new comment
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
     </script>
 
 </body>
