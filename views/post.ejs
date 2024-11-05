@@ -114,11 +114,10 @@
             .then(data => {
                 // Reset the input field
                 replyInput.value = '';
-                
-                // Create a new list item for the reply
+
+                // Append the new reply to the reply list
                 const replyList = document.querySelector(`#reply-list-${commentId}`);
                 const newReplyItem = document.createElement('li');
-                newReplyItem.className = 'reply-item'; // Apply reply-item class for styling
                 newReplyItem.innerHTML = `<strong>${data.replyAuthor}:</strong> ${data.replyText}`;
                 replyList.appendChild(newReplyItem);
             })
