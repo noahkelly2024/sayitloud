@@ -20,13 +20,8 @@
             <% }); %>
         </ul>
 
-        <div class="comment-buttons">
-            <button class="comment-button" onclick="toggleCommentBox('<%= post._id %>')">Comment</button>
-            <!-- You can add another button for replying if needed -->
-            <!-- <button class="reply-button">Reply</button> -->
-        </div>
-
-        <div class="comment-input-container" id="comment-input-<%= post._id %>" style="display: none;">
+        <!-- Comment input section -->
+        <div class="comment-input-container" id="comment-input-<%= post._id %>">
             <input type="text" class="comment-input" placeholder="Your comment here...">
             <button class="submit-comment-button" onclick="submitComment('<%= post._id %>')">Submit</button>
         </div>
@@ -34,17 +29,12 @@
     </div>
     
     <script>
-        function toggleCommentBox(postId) {
-            const commentInputContainer = document.getElementById(`comment-input-${postId}`);
-            commentInputContainer.style.display = commentInputContainer.style.display === 'none' ? 'block' : 'none';
-        }
-    
         function submitComment(postId) {
             const commentInput = document.querySelector(`#comment-input-${postId} .comment-input`);
             const commentText = commentInput.value;
 
             if (commentText.trim() === "") {
-                alert("Comment cannot be empty!"); // Optional: alert if input is empty
+                alert("Comment cannot be empty!"); // Alert if input is empty
                 return;
             }
 
