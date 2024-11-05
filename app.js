@@ -17,7 +17,7 @@ app.use(express.static('public'));
 const PORT = process.env.PORT || 80; 
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/forumDB', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb://localhost:27017/forumDB');
 
 // Define a schema and model for forum posts
 const postSchema = {
@@ -37,14 +37,14 @@ app.get('/new-post', (req, res) => {
   });
 
 // Render the homepage
-app.get('/', (req, res) => {
-    Post.find({}, (err, posts) => {
-      if (!err) {
-        res.render('home', { posts: posts });
-      } else {
-        console.log(err);
-      }
-    });
+  app.get('/', async (req, res) => {
+    try {
+      const posts = await Post.find({});
+      res.render('home', { posts: posts });
+    } catch (err) {
+      console.log(err);
+      res.status(500).send("Error retrieving posts");
+    }
   });
 
 // Handle the form submission and save the new post to the database
