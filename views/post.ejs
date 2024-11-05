@@ -4,18 +4,35 @@
     <link rel="stylesheet" href="/styles.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= post.title %></title> <!-- Use the post title for the page title -->
+    <title><%= post.title %></title>
 </head>
 <body>
 
     <div class="form-container">
         <h1><%= post.title %></h1> <!-- Display the post title -->
         <p><%= post.content %></p> <!-- Display the post content -->
-        <% if (post.createdAt) { %>
-            <p>Posted on: <%= post.createdAt.toDateString() %></p> <!-- Display the date -->
-        <% } %>
+        <p>Posted on: <%= post.createdAt.toDateString() %></p> <!-- Display the date -->
         <a href="/">Back to Home</a>
     </div>
+
+    <h2>Comments:</h2>
+    <ul>
+        <% post.comments.forEach(function(comment) { %>
+            <li>
+                <strong><%= comment.author %>:</strong> <%= comment.text %>
+                <form action="/posts/<%= post._id %>/comments/<%= comment._id %>/reply" method="POST">
+                    <input type="text" name="replyText" placeholder="Reply..." required>
+                    <input type="text" name="replyAuthor" placeholder="Your name (optional)">
+                    <button type="submit">Reply</button>
+                </form>
+                <ul>
+                    <% comment.replies.forEach(function(reply) { %>
+                        <li><strong><%= reply.author %>:</strong> <%= reply.text %></li>
+                    <% }); %>
+                </ul>
+            </li>
+        <% }); %>
+    </ul>
 
 </body>
 </html>

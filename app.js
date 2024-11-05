@@ -18,15 +18,20 @@ mongoose.connect('mongodb://localhost:27017/forumDB')
     .then(() => console.log('Connected to MongoDB!'))
     .catch(err => console.error('Could not connect to MongoDB:', err));
 
-// Define schemas and models for posts and comments
+const replySchema = new mongoose.Schema({
+    text: String,
+    author: String,
+}, { timestamps: true }); // To include createdAt field for replies
+
 const commentSchema = new mongoose.Schema({
-    text: { type: String, required: true },
-    author: { type: String, default: 'Anonymous' },
+    text: String,
+    author: String,
+    replies: [replySchema] // Add replies as an array of replySchema
 });
 
 const postSchema = new mongoose.Schema({
-    title: { type: String, required: true },
-    content: { type: String, required: true },
+    title: String,
+    content: String,
     comments: [commentSchema]
 }, { timestamps: true }); // This will add createdAt and updatedAt fields automatically
 
@@ -91,6 +96,29 @@ app.get('/posts/:id', async (req, res) => {
         res.status(500).send("Error retrieving post");
     }
 });
+
+// Route to handle reply submissions
+app.post('/posts/:postId/comments/:commentId/reply', async (req, res) => {
+    const postId = req.params.postId;
+    const commentId = req.params.commentId;
+    const newReply = {
+        text: req.body.replyText,
+        author: req.body.replyAuthor || "Anonymous" // Set a default author
+    };
+
+    try {
+        await Post.findByIdAndUpdate(postId, {
+            $push: { 'comments.$[comment].replies': newReply }
+        }, {
+            arrayFilters: [{ 'comment._id': commentId }] // Filter to find the correct comment
+        });
+        res.redirect(`/posts/${postId}`); // Redirect back to the post page
+    } catch (err) {
+        console.log(err);
+        res.status(500).send("Error saving reply");
+    }
+});
+
 
 // Start the server
 app.listen(3000, () => {
