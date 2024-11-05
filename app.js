@@ -17,10 +17,11 @@ app.use(express.static('public'));
 app.use(express.json()); 
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/forumDB')
+mongoose.connect('mongodb://localhost:27017/forumDB', { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('Connected to MongoDB!'))
     .catch(err => console.error('Could not connect to MongoDB:', err));
 
+// Define schemas
 const replySchema = new mongoose.Schema({
     text: String,
     author: String,
@@ -67,9 +68,6 @@ app.post('/new-post', async (req, res) => {
     }
 });
 
-const commentInput = document.querySelector(`#comments-list-${postId} .comment-input`);
-console.log(commentInput); // Check if it is null
-
 // Route to handle comment submissions
 app.post('/posts/:postId/comment', async (req, res) => {
     const postId = req.params.postId;
@@ -86,7 +84,7 @@ app.post('/posts/:postId/comment', async (req, res) => {
         // Return the newly added comment's data
         res.json({
             commentAuthor: newComment.author,
-            commentId: post.comments[post.comments.length - 1]._id,
+            commentId: post.comments[post.comments.length - 1]._id, // Use the last comment's ID
             commentText: newComment.text
         });
     } catch (err) {
@@ -110,14 +108,13 @@ app.post('/posts/:postId/comment/:commentId/reply', async (req, res) => {
         comment.replies.push(newReply); // Add the reply to the comment
         await post.save();
         
-        // Return the reply author and text along with a generated replyId
-        res.json({ replyAuthor: newReply.author, replyText: newReply.text, replyId: newReply._id });
+        // Return the reply author and text along with the replyId (we don't generate a new ID for replies)
+        res.json({ replyAuthor: newReply.author, replyText: newReply.text });
     } catch (err) {
         console.log(err);
         res.status(500).send("Error saving reply");
     }
 });
-
 
 // Route to display individual posts
 app.get('/posts/:id', async (req, res) => {
@@ -134,6 +131,7 @@ app.get('/posts/:id', async (req, res) => {
 });
 
 // Start the server
-app.listen(3000, () => {
-    console.log('Server is running on http://0.0.0.0:3000');
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server is running on http://0.0.0.0:${PORT}`);
 });
