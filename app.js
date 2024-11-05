@@ -78,6 +78,21 @@ app.post('/posts/:postId/comment', async (req, res) => {
     }
 });
 
+// Route to render individual post details
+app.get('/posts/:id', async (req, res) => {
+    try {
+        const post = await Message.findById(req.params.id); // Use your model name
+        if (!post) {
+            return res.status(404).send('Post not found');
+        }
+        res.render('post', { post: post });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error retrieving post");
+    }
+});
+
+
 // Start the server
 app.listen(3000, () => {
     console.log('Server is running on http://0.0.0.0:3000');

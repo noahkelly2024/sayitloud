@@ -1,35 +1,60 @@
-/* General page styles */
 body {
-    background-color: #292927;
-    color: #ffffff;
+    background-color: #f0f0f0; /* Light gray background */
     font-family: Arial, sans-serif;
-    text-align: center;
+    margin: 0;
+    padding: 0;
 }
 
-/* Header color */
-h1 {
-    color: #3333cc;
+h1, h2 {
+    text-align: center; /* Center header text */
 }
 
-/* Form input and button */
-form input[type="text"] {
-    color: #ffffff;
-    border: 1px solid #3333cc;
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px auto;
 }
 
-form button {
-    color: white;
-    background-color: #3333cc;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
+input[type="text"] {
+    width: 300px; /* Width of the input field */
+    padding: 10px; /* Padding for the input */
+    margin: 10px 0; /* Margin for spacing */
+    border: 2px solid #007BFF; /* Blue border */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Font size */
 }
 
-/* Submitted text items */
-ul li {
-    color: #ffffff;
-    list-style-type: none; /* Removes bullet points */
-    padding: 0;            /* Removes default padding */
-    margin: 0;             /* Removes default margin */
+button {
+    padding: 10px 20px; /* Padding for the button */
+    background-color: #007BFF; /* Blue background */
+    color: white; /* White text */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 16px; /* Font size */
+}
+
+button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+ul {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0; /* Remove padding */
+}
+
+li {
+    background: white; /* White background for each post */
+    border: 1px solid #ccc; /* Light gray border */
+    border-radius: 5px; /* Rounded corners */
+    margin: 10px auto; /* Center and space posts */
+    padding: 10px; /* Padding inside posts */
+    width: 80%; /* Width of posts */
+    transition: background 0.3s; /* Smooth background change */
+}
+
+li:hover {
+    background: #f1f1f1; /* Light gray on hover */
+    cursor: pointer; /* Pointer cursor on hover */
 }
