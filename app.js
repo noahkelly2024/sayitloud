@@ -80,7 +80,8 @@ app.post('/posts/:postId/comment', async (req, res) => {
         const post = await Post.findById(postId);
         post.comments.push(newComment);
         await post.save();
-        res.json({ commentAuthor: newComment.author, commentId: post.comments[post.comments.length - 1]._id });
+        // Return the newly added comment's data
+        res.json({ commentAuthor: newComment.author, commentId: post.comments[post.comments.length - 1]._id, commentText: newComment.text });
     } catch (err) {
         console.log(err);
         res.status(500).send("Error saving comment");
@@ -101,7 +102,8 @@ app.post('/posts/:postId/comment/:commentId/reply', async (req, res) => {
         const comment = post.comments.id(commentId); // Find the comment by ID
         comment.replies.push(newReply); // Add the reply to the comment
         await post.save();
-        res.json({ replyAuthor: newReply.author, replyId: comment.replies[comment.replies.length - 1]._id });
+        // Return the newly added reply's data
+        res.json({ replyAuthor: newReply.author, replyText: newReply.text });
     } catch (err) {
         console.log(err);
         res.status(500).send("Error saving reply");
