@@ -9,35 +9,50 @@
 <body>
 
     <div class="form-container">
-        <h1><%= post.title %></h1> <!-- Display the post title -->
-        <p><%= post.content %></p> <!-- Display the post content -->
-        <p>Posted on: <%= post.createdAt.toDateString() %></p> <!-- Display the date -->
-        <a href="/">Back to Home</a>
-    </div>
-
-    <ul>
-        <% post.comments.forEach(function(comment) { %>
-            <li>
-                <strong><%= comment.author %>:</strong> <%= comment.text %>
-                <form action="/posts/<%= post._id %>/comments/<%= comment._id %>/reply" method="POST">
-                    <input type="text" name="replyText" placeholder="Reply..." required>
-                    <button type="submit">Reply</button>
-                </form>
-                <ul>
-                    <% comment.replies.forEach(function(reply) { %>
-                        <li><strong><%= reply.author %>:</strong> <%= reply.text %></li>
-                    <% }); %>
-                </ul>
-            </li>
-        <% }); %>
-    </ul>
+        <h1><%= post.title %></h1>
+        <p><%= post.content %></p>
+        <p>Posted on: <%= post.createdAt.toDateString() %></p>
+        
+        <div class="comment-buttons">
+            <button class="comment-button" onclick="toggleCommentBox('<%= post._id %>')">Comment</button>
+            <!-- You can add another button for replying if needed -->
+            <!-- <button class="reply-button">Reply</button> -->
+        </div>
     
-    <!-- Form to add a new comment -->
-    <h3>Add a Comment:</h3>
-    <form action="/posts/<%= post._id %>/comment" method="POST">
-        <input type="text" name="commentText" placeholder="Your comment" required>
-        <button type="submit">Submit Comment</button>
-    </form>
+        <!-- Comment input area that toggles visibility -->
+        <div class="comment-input-container" id="comment-input-<%= post._id %>" style="display: none;">
+            <input type="text" class="comment-input" placeholder="Your comment here...">
+            <button class="submit-comment-button" onclick="submitComment('<%= post._id %>')">Submit</button>
+        </div>
+    
+        <h2>Comments:</h2>
+        <ul>
+            <% post.comments.forEach(function(comment) { %>
+                <li>
+                    <strong><%= comment.author %>:</strong> <%= comment.text %>
+                </li>
+            <% }); %>
+        </ul>
+    </div>
+    
+    <script>
+        function toggleCommentBox(postId) {
+            const commentInputContainer = document.getElementById(`comment-input-${postId}`);
+            commentInputContainer.style.display = commentInputContainer.style.display === 'none' ? 'block' : 'none';
+        }
+    
+        function submitComment(postId) {
+            const commentInput = document.querySelector(`#comment-input-${postId} .comment-input`);
+            const commentText = commentInput.value;
+            
+            // Here you would typically send the comment to your server
+            // For example, using fetch or AJAX to submit the comment
+            console.log(`Comment for post ${postId}: ${commentText}`);
+            
+            // Reset input field after submission
+            commentInput.value = '';
+        }
+    </script>
 
 </body>
 </html>

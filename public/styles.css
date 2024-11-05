@@ -46,29 +46,36 @@ form button {
     transition: background-color 0.3s; /* Smooth transition for hover */
 }
 
-/* Style for the comment input box */
-.comment-input {
-    width: 100%; /* Adjust the width as needed */
-    padding: 8px; /* Slightly less padding */
-    border-radius: 20px; /* Make it rounded */
-    border: 1px solid #ccc; /* Border style */
-    margin-bottom: 10px; /* Space below the input */
+.comment-buttons {
+    margin-bottom: 10px; /* Space below comment buttons */
 }
 
-/* Style for the comment button */
-.comment-button {
-    padding: 8px 12px; /* Smaller padding */
-    border-radius: 20px; /* Make it rounded */
-    background-color: #3d4955; /* Consistent button color */
+.comment-button, .submit-comment-button {
+    padding: 5px 10px; /* Smaller padding for compact buttons */
+    border-radius: 15px; /* Rounded corners */
+    background-color: #007bff; /* Button color */
     color: white; /* Text color */
     border: none; /* No border */
     cursor: pointer; /* Pointer cursor */
     transition: background-color 0.3s; /* Smooth transition for hover */
 }
 
-/* Change background color on hover */
-.comment-button:hover, form button:hover {
+.comment-button:hover, .submit-comment-button:hover {
     background-color: #0056b3; /* Darker shade on hover */
+}
+
+.comment-input {
+    width: calc(100% - 80px); /* Adjust width for padding */
+    padding: 5px; /* Padding for comment input */
+    border-radius: 15px; /* Rounded corners */
+    border: 1px solid #ccc; /* Border style */
+    margin-right: 5px; /* Space to the right for the button */
+}
+
+.comment-input-container {
+    display: flex; /* Flexbox for layout */
+    align-items: center; /* Center vertically */
+    margin-bottom: 10px; /* Space below the input container */
 }
 
 ul {
