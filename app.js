@@ -13,6 +13,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Set up the public directory for static files
 app.use(express.static('public'));
 
+// Use this line to parse JSON request bodies
+app.use(express.json()); 
+
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/forumDB')
     .then(() => console.log('Connected to MongoDB!'))

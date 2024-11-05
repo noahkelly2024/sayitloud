@@ -7,7 +7,6 @@
     <title><%= post.title %></title>
 </head>
 <body>
-
     <div class="form-container">
         <h1><%= post.title %></h1>
         <p><%= post.content %></p>
@@ -41,7 +40,7 @@
             commentInputContainer.style.display = commentInputContainer.style.display === 'none' ? 'block' : 'none';
         }
     
-        function submitComment(postId) {
+function submitComment(postId) {
     const commentInput = document.querySelector(`#comment-input-${postId} .comment-input`);
     const commentText = commentInput.value;
     
