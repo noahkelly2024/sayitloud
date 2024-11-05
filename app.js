@@ -72,17 +72,39 @@ app.post('/posts/:postId/comment', async (req, res) => {
     const postId = req.params.postId;
     const newComment = {
         text: req.body.commentText,
-        author: req.body.commentAuthor || "Anonymous" // Set a default author
+        author: req.body.commentAuthor || "Anonymous",
+        replies: [] // Initialize replies as an empty array
     };
 
     try {
-        await Post.findByIdAndUpdate(postId, {
-            $push: { comments: newComment }
-        });
-        res.status(200).json({ message: 'Comment added successfully', commentAuthor: newComment.author, commentText: newComment.text }); // Send success response
+        const post = await Post.findById(postId);
+        post.comments.push(newComment);
+        await post.save();
+        res.json({ commentAuthor: newComment.author, commentId: newComment._id });
     } catch (err) {
         console.log(err);
         res.status(500).send("Error saving comment");
+    }
+});
+
+// Route to handle reply submissions
+app.post('/posts/:postId/comment/:commentId/reply', async (req, res) => {
+    const postId = req.params.postId;
+    const commentId = req.params.commentId;
+    const newReply = {
+        text: req.body.replyText,
+        author: req.body.replyAuthor || "Anonymous"
+    };
+
+    try {
+        const post = await Post.findById(postId);
+        const comment = post.comments.id(commentId); // Find the comment by ID
+        comment.replies.push(newReply); // Add the reply to the comment
+        await post.save();
+        res.json({ replyAuthor: newReply.author });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send("Error saving reply");
     }
 });
 
