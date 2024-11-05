@@ -11,10 +11,15 @@ h1, h2 {
     color: #333; /* Darker text color for headings */
 }
 
+h3 {
+    color: #333; /* Darker text color for headings */
+    font-size: 16px;
+}
+
 .form-container {
     margin-bottom: 20px;
     padding: 10px;
-    background-color: #7fa986; /* White background for form container */
+    background-color: #ffffff; /* Changed to white for contrast */
     border: 1px solid #7fa986; /* Light gray border */
     border-radius: 5px; /* Rounded corners */
 }
@@ -25,25 +30,26 @@ form {
 }
 
 form input[type="text"] {
-    padding: 10px; /* Padding for text input */
+    padding: 5px; /* Padding for text input */
     border: 1px solid #c7c7c7; /* Light gray border */
-    border-radius: 5px; /* Rounded corners */
-    margin-bottom: 10px; /* Space between input and button */
+    border-radius: 100px; /* Rounded corners */
+    margin-bottom: 5px; /* Space between input and button */
 }
 
 form button {
     padding: 10px;
     border: none; /* Remove default button border */
-    border-radius: 5px;
-    background-color: #3d4955; /* Blue button color */
+    border-radius: 20px; /* Rounded corners */
+    background-color: #3d4955; /* Button color */
     color: #ffffff; /* White text color */
     cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth transition for hover */
 }
 
 /* Style for the comment input box */
 .comment-input {
     width: 100%; /* Adjust the width as needed */
-    padding: 10px; /* Smaller padding */
+    padding: 8px; /* Slightly less padding */
     border-radius: 20px; /* Make it rounded */
     border: 1px solid #ccc; /* Border style */
     margin-bottom: 10px; /* Space below the input */
@@ -51,9 +57,9 @@ form button {
 
 /* Style for the comment button */
 .comment-button {
-    padding: 8px 15px; /* Smaller padding */
+    padding: 8px 12px; /* Smaller padding */
     border-radius: 20px; /* Make it rounded */
-    background-color: #007bff; /* Button color */
+    background-color: #3d4955; /* Consistent button color */
     color: white; /* Text color */
     border: none; /* No border */
     cursor: pointer; /* Pointer cursor */
@@ -61,12 +67,8 @@ form button {
 }
 
 /* Change background color on hover */
-.comment-button:hover {
+.comment-button:hover, form button:hover {
     background-color: #0056b3; /* Darker shade on hover */
-}
-
-form button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
 }
 
 ul {
@@ -80,10 +82,19 @@ ul li {
 
 ul li a {
     text-decoration: none; /* Remove underline from links */
-    color: #007BFF; /* Link color */
+    color: #007bff; /* Link color */
     font-weight: bold; /* Bold link text */
 }
 
 ul li a:hover {
     color: #0056b3; /* Darker blue on link hover */
+}
+
+/* Style for the comment section */
+.comment-section {
+    margin-top: 20px; /* Space above comment section */
+    padding: 10px; /* Padding for comment section */
+    background-color: #f9f9f9; /* Light background for comments */
+    border-radius: 5px; /* Rounded corners */
+    border: 1px solid #ccc; /* Border for comment section */
 }
