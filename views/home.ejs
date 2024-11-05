@@ -4,26 +4,22 @@
     <link rel="stylesheet" href="/styles.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Text App</title>
+    <title>Posts</title>
 </head>
 <body>
 
-    <div class="form-container">
-        <h1>Submit Your Text</h1>
-        <form action="/new-post" method="POST">
-            <input type="text" name="title" placeholder="Enter post title" required>
-            <textarea name="content" placeholder="Enter your message" required></textarea>
-            <button type="submit">Submit</button>
-        </form>
-    </div>
+    <h1>Welcome to the Forum</h1>
     
-    <h2>Submitted Posts:</h2>
-    <ul>
+    <!-- Grid container for posts -->
+    <div class="posts-grid">
         <% posts.forEach(function(post) { %>
-            <li><a href="/posts/<%= post._id %>"><%= post.title %></a></li> <!-- Link to individual post -->
+            <div class="post-card">
+                <h2><a href="/posts/<%= post._id %>"><%= post.title %></a></h2>
+                <p><%= post.content.substring(0, 100) %>...</p> <!-- Show first 100 chars -->
+                <small>Posted on: <%= post.createdAt.toDateString() %></small>
+            </div>
         <% }); %>
-    </ul>
+    </div>
 
 </body>
 </html>
-
