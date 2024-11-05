@@ -113,10 +113,24 @@ form button {
     color: #555; /* Optional: Change text color for better readability */
 }
 
-/* Optional: Style for reply input containers to distinguish them */
+.comments-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.comment {
+    margin-bottom: 10px;
+}
+
+.reply {
+    margin-left: 20px; /* Indent replies */
+    font-style: italic; /* Italic style for replies */
+    margin-bottom: 5px;
+}
+
 .reply-input-container {
+    margin-top: 5px;
     margin-left: 20px; /* Indentation for reply input area */
-    margin-top: 10px; /* Spacing above the reply input */
 }
 
 .reply-button {
