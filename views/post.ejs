@@ -13,26 +13,20 @@
         <p><%= post.content %></p>
         <p>Posted on: <%= post.createdAt.toDateString() %></p>
         
-        <div class="comment-buttons">
-            <button class="comment-button" onclick="toggleCommentBox('<%= post._id %>')">Comment</button>
-            <!-- You can add another button for replying if needed -->
-            <!-- <button class="reply-button">Reply</button> -->
-        </div>
-    
-        <!-- Comment input area that toggles visibility -->
-        <div class="comment-input-container" id="comment-input-<%= post._id %>" style="display: none;">
-            <input type="text" class="comment-input" placeholder="Your comment here...">
-            <button class="submit-comment-button" onclick="submitComment('<%= post._id %>')">Submit</button>
-        </div>
-    
         <h2>Comments:</h2>
         <ul id="comments-list-<%= post._id %>">
             <% post.comments.forEach(function(comment) { %>
                 <li><%= comment.author %>: <%= comment.text %></li>
             <% }); %>
         </ul>
-        
-        <div class="comment-input-container" id="comment-input-<%= post._id %>">
+
+        <div class="comment-buttons">
+            <button class="comment-button" onclick="toggleCommentBox('<%= post._id %>')">Comment</button>
+            <!-- You can add another button for replying if needed -->
+            <!-- <button class="reply-button">Reply</button> -->
+        </div>
+
+        <div class="comment-input-container" id="comment-input-<%= post._id %>" style="display: none;">
             <input type="text" class="comment-input" placeholder="Your comment here...">
             <button class="submit-comment-button" onclick="submitComment('<%= post._id %>')">Submit</button>
         </div>
