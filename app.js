@@ -80,7 +80,7 @@ app.post('/posts/:postId/comment', async (req, res) => {
         const post = await Post.findById(postId);
         post.comments.push(newComment);
         await post.save();
-        res.json({ commentAuthor: newComment.author, commentId: newComment._id });
+        res.json({ commentAuthor: newComment.author, commentId: post.comments[post.comments.length - 1]._id });
     } catch (err) {
         console.log(err);
         res.status(500).send("Error saving comment");
@@ -101,18 +101,17 @@ app.post('/posts/:postId/comment/:commentId/reply', async (req, res) => {
         const comment = post.comments.id(commentId); // Find the comment by ID
         comment.replies.push(newReply); // Add the reply to the comment
         await post.save();
-        res.json({ replyAuthor: newReply.author });
+        res.json({ replyAuthor: newReply.author, replyId: comment.replies[comment.replies.length - 1]._id });
     } catch (err) {
         console.log(err);
         res.status(500).send("Error saving reply");
     }
 });
 
-
-
+// Route to display individual posts
 app.get('/posts/:id', async (req, res) => {
     try {
-        const post = await Post.findById(req.params.id); // Ensure you're using the correct model name
+        const post = await Post.findById(req.params.id);
         if (!post) {
             return res.status(404).send('Post not found');
         }
@@ -122,51 +121,6 @@ app.get('/posts/:id', async (req, res) => {
         res.status(500).send("Error retrieving post");
     }
 });
-
-
-// Route to handle reply submissions
-app.post('/posts/:postId/comments/:commentId/reply', async (req, res) => {
-    const postId = req.params.postId;
-    const commentId = req.params.commentId;
-    const newReply = {
-        text: req.body.replyText,
-        author: req.body.replyAuthor || "Anonymous" // Set a default author
-    };
-
-    try {
-        await Post.findByIdAndUpdate(postId, {
-            $push: { 'comments.$[comment].replies': newReply }
-        }, {
-            arrayFilters: [{ 'comment._id': commentId }] // Filter to find the correct comment
-        });
-        res.redirect(`/posts/${postId}`); // Redirect back to the post page
-    } catch (err) {
-        console.log(err);
-        res.status(500).send("Error saving reply");
-    }
-});
-
-// Route to handle new comment submissions
-// Route to handle comment submissions
-app.post('/posts/:postId/comment', async (req, res) => {
-    const postId = req.params.postId;
-    const newComment = {
-        text: req.body.commentText,
-        author: req.body.commentAuthor || "Anonymous" // Set a default author
-    };
-
-    try {
-        // Use findByIdAndUpdate to push the new comment into the comments array
-        await Post.findByIdAndUpdate(postId, {
-            $push: { comments: newComment }
-        });
-        res.status(200).json({ message: 'Comment added successfully' }); // Send success response
-    } catch (err) {
-        console.log(err);
-        res.status(500).send("Error saving comment");
-    }
-});
-
 
 // Start the server
 app.listen(3000, () => {
