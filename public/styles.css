@@ -133,6 +133,11 @@ form button {
     cursor: pointer;
 }
 
+.reply-item {
+    margin-left: 20px; /* Indent replies */
+    font-style: italic; /* Optional: change font style for replies */
+}
+
 ul {
     list-style-type: none; /* Remove default bullets */
     padding: 0; /* Remove default padding */
