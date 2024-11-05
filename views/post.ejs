@@ -44,7 +44,7 @@
         </ul>
 
         <div class="comment-input-container">
-            <input type="text" class="comment-input" placeholder="Your comment here...">
+            <input type="text" class="comment-input" placeholder="Your comment here..." id="comment-input-<%= post._id %>"> <!-- Added id -->
             <button class="submit-comment-button" onclick="submitComment('<%= post._id %>')">Submit</button>
         </div>
     </div>
@@ -58,13 +58,15 @@
         }
 
         function submitComment(postId) {
-            const commentInput = document.querySelector(`#comments-list-${postId} .comment-input`);
-            const commentText = commentInput.value;
-
+            // Use the specific ID of the comment input
+            const commentInput = document.getElementById(`comment-input-${postId}`);
+            
             if (!commentInput) {
                 console.error("Comment input field not found");
                 return; // Exit early if input is not found
             }
+
+            const commentText = commentInput.value; // Now it won't be null if the ID is correct
 
             if (commentText.trim() === "") {
                 alert("Comment cannot be empty!");

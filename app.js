@@ -67,6 +67,9 @@ app.post('/new-post', async (req, res) => {
     }
 });
 
+const commentInput = document.querySelector(`#comments-list-${postId} .comment-input`);
+console.log(commentInput); // Check if it is null
+
 // Route to handle comment submissions
 app.post('/posts/:postId/comment', async (req, res) => {
     const postId = req.params.postId;
