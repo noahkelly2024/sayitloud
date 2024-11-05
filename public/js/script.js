@@ -47,11 +47,11 @@ function toggleReplyBox(postId, commentId, replyId = '') {
     replyInputContainer.style.display = replyInputContainer.style.display === 'none' ? 'block' : 'none';
 }
 
-function submitReply(postId, commentId, replyText = '', replyId = '') {
-    const replyInput = document.querySelector(`#reply-input-${postId}-${commentId}${replyId ? '-' + replyId : ''} .reply-input`);
-    const text = replyInput.value || replyText;
+function submitReply(postId, commentId) {
+    const replyInput = document.querySelector(`#reply-input-${postId}-${commentId} .reply-input`);
+    const replyText = replyInput.value;
 
-    if (text.trim() === "") {
+    if (replyText.trim() === "") {
         alert("Reply cannot be empty!");
         return;
     }
@@ -62,7 +62,7 @@ function submitReply(postId, commentId, replyText = '', replyId = '') {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            replyText: text,
+            replyText: replyText,
             replyAuthor: "Anonymous"
         }),
     })
@@ -70,18 +70,17 @@ function submitReply(postId, commentId, replyText = '', replyId = '') {
     .then(data => {
         replyInput.value = ''; // Reset input field
 
-        const replyList = document.querySelector(`#reply-list-${replyId ? replyId : commentId}`);
-        const newReplyItem = document.createElement('li');
-        newReplyItem.className = "reply";
-        newReplyItem.innerHTML = `
-            <strong>${data.replyAuthor}:</strong> <em>${data.replyText}</em>
-            <button class="reply-button" onclick="toggleReplyBox('${postId}', '${commentId}', '${data.replyId}')">Reply</button>
-            <div class="reply-input-container" id="reply-input-${postId}-${commentId}-${data.replyId}" style="display: none;">
-                <input type="text" class="reply-input" placeholder="Your reply here...">
-                <button class="submit-reply-button" onclick="submitReply('${postId}', '${commentId}', '', '${data.replyId}')">Submit</button>
-            </div>`;
-        
-        replyList.appendChild(newReplyItem);
+        // Wait for a small delay before trying to append the reply
+        setTimeout(() => {
+            const replyList = document.querySelector(`#reply-list-${commentId}`);
+            if (replyList) {
+                const newReplyItem = document.createElement('li');
+                newReplyItem.innerHTML = `<strong>${data.replyAuthor}:</strong> ${data.replyText}`;
+                replyList.appendChild(newReplyItem);
+            } else {
+                console.error(`Reply list not found for comment ${commentId}`);
+            }
+        }, 100); // 100ms delay before trying to append the reply
     })
     .catch((error) => {
         console.error('Error:', error);
