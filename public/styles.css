@@ -2,7 +2,7 @@
 
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4; /* Light background color */
+    background-color: #7fa986; /* Light background color */
     margin: 0;
     padding: 20px;
 }
@@ -14,8 +14,8 @@ h1, h2 {
 .form-container {
     margin-bottom: 20px;
     padding: 10px;
-    background-color: #fff; /* White background for form container */
-    border: 1px solid #ccc; /* Light gray border */
+    background-color: #7fa986; /* White background for form container */
+    border: 1px solid #7fa986; /* Light gray border */
     border-radius: 5px; /* Rounded corners */
 }
 
@@ -26,7 +26,7 @@ form {
 
 form input[type="text"] {
     padding: 10px; /* Padding for text input */
-    border: 1px solid #ccc; /* Light gray border */
+    border: 1px solid #c7c7c7; /* Light gray border */
     border-radius: 5px; /* Rounded corners */
     margin-bottom: 10px; /* Space between input and button */
 }
@@ -35,8 +35,8 @@ form button {
     padding: 10px;
     border: none; /* Remove default button border */
     border-radius: 5px;
-    background-color: #007BFF; /* Blue button color */
-    color: white; /* White text color */
+    background-color: #3d4955; /* Blue button color */
+    color: #ffffff; /* White text color */
     cursor: pointer; /* Pointer cursor on hover */
 }
 

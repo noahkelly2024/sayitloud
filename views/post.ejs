@@ -21,7 +21,6 @@
                 <strong><%= comment.author %>:</strong> <%= comment.text %>
                 <form action="/posts/<%= post._id %>/comments/<%= comment._id %>/reply" method="POST">
                     <input type="text" name="replyText" placeholder="Reply..." required>
-                    <input type="text" name="replyAuthor" placeholder="Your name (optional)">
                     <button type="submit">Reply</button>
                 </form>
                 <ul>
@@ -37,7 +36,6 @@
     <h2>Add a Comment:</h2>
     <form action="/posts/<%= post._id %>/comment" method="POST">
         <input type="text" name="commentText" placeholder="Your comment" required>
-        <input type="text" name="commentAuthor" placeholder="Your name (optional)">
         <button type="submit">Submit Comment</button>
     </form>
 
