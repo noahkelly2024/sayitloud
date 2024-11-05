@@ -119,7 +119,7 @@ app.post('/posts/:postId/comments/:commentId/reply', async (req, res) => {
     }
 });
 
-// Route to handle comment submissions
+// Route to handle new comment submissions
 app.post('/posts/:postId/comment', async (req, res) => {
     const postId = req.params.postId;
     const newComment = {
@@ -129,7 +129,7 @@ app.post('/posts/:postId/comment', async (req, res) => {
 
     try {
         await Post.findByIdAndUpdate(postId, {
-            $push: { comments: newComment }
+            $push: { comments: newComment } // Add the new comment to the post
         });
         res.redirect(`/posts/${postId}`); // Redirect back to the post page
     } catch (err) {
