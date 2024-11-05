@@ -41,6 +41,14 @@ const postSchema = new mongoose.Schema({
 
 const Post = mongoose.model('Post', postSchema);
 
+const replyList = document.querySelector(`#reply-list-${commentId}`);
+if (replyList) {
+    replyList.appendChild(newReplyItem); // Only do this if replyList exists
+} else {
+    console.error(`Reply list not found for comment ${commentId}`);
+}
+
+
 // Route to render homepage with all posts
 app.get('/', async (req, res) => {
     try {
