@@ -1,9 +1,15 @@
-header {
-    font-family: Arial, sans-serif;
-    background-color: #3709f0;
+h1 {
     color: #ffffff;
-    text-align: center;
+    text-align: center; /* Centers text horizontally */
+    margin-top: 20px; /* Adds spacing from the top */
 }
+
+/* Optional: Center the h1 vertically with other content
+body, .form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers horizontally
+ } */
 
 body {
     font-family: Arial, sans-serif;
