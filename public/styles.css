@@ -40,6 +40,31 @@ form button {
     cursor: pointer; /* Pointer cursor on hover */
 }
 
+/* Style for the comment input box */
+.comment-input {
+    width: 100%; /* Adjust the width as needed */
+    padding: 10px; /* Smaller padding */
+    border-radius: 20px; /* Make it rounded */
+    border: 1px solid #ccc; /* Border style */
+    margin-bottom: 10px; /* Space below the input */
+}
+
+/* Style for the comment button */
+.comment-button {
+    padding: 8px 15px; /* Smaller padding */
+    border-radius: 20px; /* Make it rounded */
+    background-color: #007bff; /* Button color */
+    color: white; /* Text color */
+    border: none; /* No border */
+    cursor: pointer; /* Pointer cursor */
+    transition: background-color 0.3s; /* Smooth transition for hover */
+}
+
+/* Change background color on hover */
+.comment-button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}
+
 form button:hover {
     background-color: #0056b3; /* Darker blue on hover */
 }

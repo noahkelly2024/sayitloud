@@ -9,34 +9,21 @@
 <body>
 
     <div class="form-container">
-        <!-- Text box to enter name -->
-        <input type="text" id="userName" placeholder="Enter your name" />
-        <button id="setNameButton">Set Name</button>
-    </div>
-
-    <h1>Submit Your Text</h1>
-    
-    <div>
+        <h1>Submit Your Text</h1>
         <form action="/new-post" method="POST">
-            <input type="text" name="message" placeholder="Enter your message" required>
-            <input type="hidden" name="author" id="authorName" /> <!-- Hidden input to store the author name -->
+            <input type="text" name="title" placeholder="Enter post title" required>
+            <textarea name="content" placeholder="Enter your message" required></textarea>
             <button type="submit">Submit</button>
         </form>
     </div>
-
-    <h2>Submitted Texts:</h2>
+    
+    <h2>Submitted Posts:</h2>
     <ul>
         <% posts.forEach(function(post) { %>
             <li><a href="/posts/<%= post._id %>"><%= post.title %></a></li> <!-- Link to individual post -->
         <% }); %>
     </ul>
-    
-    <script>
-        document.getElementById('setNameButton').addEventListener('click', function() {
-            var userName = document.getElementById('userName').value;
-            document.getElementById('authorName').value = userName; // Set hidden input value to author name
-        });
-    </script>
-    
+
 </body>
 </html>
+
