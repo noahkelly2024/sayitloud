@@ -98,17 +98,25 @@ form button {
     margin-bottom: 10px; /* Space below the input container */
 }
 
-.reply-input-container {
-    display: flex; /* Align input and button inline */
-    margin-top: 5px;
-}
-
 .reply-input {
     width: 80%; /* Adjust width of reply input */
     padding: 5px;
     border: 1px solid #ccc;
     border-radius: 4px;
     margin-right: 5px;
+}
+
+/* Styles for replies */
+.reply-item {
+    margin-left: 20px; /* Indentation for replies */
+    font-style: italic; /* Italics for replies */
+    color: #555; /* Optional: Change text color for better readability */
+}
+
+/* Optional: Style for reply input containers to distinguish them */
+.reply-input-container {
+    margin-left: 20px; /* Indentation for reply input area */
+    margin-top: 10px; /* Spacing above the reply input */
 }
 
 .reply-button {
@@ -131,11 +139,6 @@ form button {
     border-radius: 5px;
     padding: 5px 10px;
     cursor: pointer;
-}
-
-.reply-item {
-    margin-left: 20px; /* Indent replies */
-    font-style: italic; /* Optional: change font style for replies */
 }
 
 ul {

@@ -25,7 +25,13 @@
                         <input type="text" class="reply-input" placeholder="Your reply here...">
                         <button class="submit-reply-button" onclick="submitReply('<%= post._id %>', '<%= comment._id %>')">Submit</button>
                     </div>
-                    <ul class="reply-list" id="reply-list-<%= comment._id %>"></ul>
+                    <ul class="reply-list" id="reply-list-<%= comment._id %>">
+                        <% comment.replies.forEach(function(reply) { %>
+                            <li class="reply-item">
+                                <strong><%= reply.author %>:</strong> <%= reply.text %>
+                            </li>
+                        <% }); %>
+                    </ul>
                 </li>
             <% }); %>
         </ul>
@@ -113,6 +119,7 @@
 
                 const replyList = document.querySelector(`#reply-list-${commentId}`);
                 const newReplyItem = document.createElement('li');
+                newReplyItem.classList.add('reply-item'); // Add the reply-item class for styling
                 newReplyItem.innerHTML = `<strong>${data.replyAuthor}:</strong> ${data.replyText}`;
                 replyList.appendChild(newReplyItem);
             })
