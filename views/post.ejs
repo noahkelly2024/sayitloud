@@ -4,13 +4,16 @@
     <link rel="stylesheet" href="/styles.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Post Details</title>
+    <title><%= post.title %></title> <!-- Use the post title for the page title -->
 </head>
 <body>
 
     <div class="form-container">
-        <h1><%= post.message %></h1> <!-- Display the post message -->
-        <p>Posted on: <%= post.createdAt.toDateString() %></p> <!-- Display the date -->
+        <h1><%= post.title %></h1> <!-- Display the post title -->
+        <p><%= post.content %></p> <!-- Display the post content -->
+        <% if (post.createdAt) { %>
+            <p>Posted on: <%= post.createdAt.toDateString() %></p> <!-- Display the date -->
+        <% } %>
         <a href="/">Back to Home</a>
     </div>
 

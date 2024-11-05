@@ -14,31 +14,31 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/forumDB', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb://localhost:27017/forumDB')
     .then(() => console.log('Connected to MongoDB!'))
     .catch(err => console.error('Could not connect to MongoDB:', err));
 
 // Define schemas and models for posts and comments
 const commentSchema = new mongoose.Schema({
-    text: String,
-    author: String,
+    text: { type: String, required: true },
+    author: { type: String, default: 'Anonymous' },
 });
 
 const postSchema = new mongoose.Schema({
-    title: String,
-    content: String,
-    comments: [commentSchema] // Add comments as an array of commentSchema
-});
+    title: { type: String, required: true },
+    content: { type: String, required: true },
+    comments: [commentSchema]
+}, { timestamps: true }); // This will add createdAt and updatedAt fields automatically
 
 const Post = mongoose.model('Post', postSchema);
 
-// Homepage route with async/await for retrieving posts
+// Route to render homepage with all posts
 app.get('/', async (req, res) => {
     try {
         const posts = await Post.find({});
-        res.render('home', { posts: posts });
+        res.render('home', { posts });
     } catch (err) {
-        console.log(err);
+        console.error(err);
         res.status(500).send("Error retrieving posts");
     }
 });
@@ -51,8 +51,8 @@ app.post('/new-post', async (req, res) => {
     });
 
     try {
-        await newPost.save();
-        res.redirect('/');
+        const savedPost = await newPost.save();
+        res.redirect(`/posts/${savedPost._id}`); // Redirect to the new post
     } catch (err) {
         console.log(err);
         res.status(500).send("Error saving post");
@@ -85,7 +85,7 @@ app.get('/posts/:id', async (req, res) => {
         if (!post) {
             return res.status(404).send('Post not found');
         }
-        res.render('post', { post: post });
+        res.render('post', { post });
     } catch (err) {
         console.error(err);
         res.status(500).send("Error retrieving post");
