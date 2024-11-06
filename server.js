@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const app = express();
+const mongoose = require('mongoose');
 
 // Set EJS as the template engine
 app.set('view engine', 'ejs');
@@ -15,6 +16,12 @@ app.set('views', path.join(__dirname, 'views'));
 
 // Serve static files (e.g., CSS, images)
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Set up mongoose connection (replace with your MongoDB URI if using MongoDB Atlas)
+mongoose.connect('mongodb://localhost:27017/forumDB', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+});
 
 // PAGES vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 

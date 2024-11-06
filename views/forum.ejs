@@ -42,7 +42,7 @@
             </ul>
 
             <!-- Comment Form -->
-            <form action="/forum/<%= post.id %>/comment" method="POST">
+            <form action="/forum/<%= post._id %>/comment" method="POST">
                 <label for="comment">Add a Comment</label>
                 <textarea name="comment" required></textarea>
                 <button type="submit">Post Comment</button>
