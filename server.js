@@ -34,10 +34,35 @@ app.get('/about', (req, res) => {
 
 // Route to render the forum page
 app.get('/forum', (req, res) => {
-    res.render('forum', { posts });  // Render the forum page with posts
+    res.render('forum', { title: 'Forum' });  // Render the forum page
 });
 
 // PAGES ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+const Post = require('./models/Post');  // Import the Post model
+
+// Route to get the forum page with posts
+app.get('/forum', async (req, res) => {
+    try {
+        const posts = await Post.find().sort({ createdAt: -1 });  // Get posts sorted by date
+        res.render('forum', { title: 'Forum', posts: posts });
+    } catch (err) {
+        res.status(500).send('Error fetching posts');
+    }
+});
+
+// Route to handle creating a new post
+app.post('/forum/create-post', async (req, res) => {
+    const { title, content } = req.body;
+    const post = new Post({ title, content });
+
+    try {
+        await post.save();  // Save the post to the database
+        res.redirect('/forum');  // Redirect to the forum page to see the new post
+    } catch (err) {
+        res.status(500).send('Error saving post');
+    }
+});
 
 
 // Sample data (in-memory posts and comments)

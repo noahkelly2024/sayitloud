@@ -3,52 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forum Page</title>
-    <link rel="stylesheet" href="/css/styles.css">
-</head>
-<body>
+    <title><%= title %> - Forum</title>
+    <link rel="stylesheet" href="/styles.css">
     <!-- Include the Navbar -->
     <%- include('partials/_navbar') %>
-
-    <h1>Welcome to the Forum</h1>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/forum">Forum</a>
+        </nav>
+    </header>
     
-    <!-- New Post Form -->
-    <h2>Create a New Post</h2>
-    <form action="/forum" method="POST">
-        <label for="title">Post Title</label>
-        <input type="text" name="title" required>
+    <main>
+        <h1>Forum</h1>
+        
+        <!-- Create New Post Form -->
+        <section id="create-post">
+            <h2>Create a New Post</h2>
+            <form action="/forum/create-post" method="POST">
+                <input type="text" name="title" placeholder="Post Title" required>
+                <textarea name="content" placeholder="Write your post..." required></textarea>
+                <button type="submit">Post</button>
+            </form>
+        </section>
 
-        <label for="content">Post Content</label>
-        <textarea name="content" required></textarea>
-
-        <button type="submit">Create Post</button>
-    </form>
-
-    <hr>
-
-    <!-- Display Existing Posts -->
-    <h2>Forum Posts</h2>
-    <% posts.forEach(post => { %>
-        <div class="post">
-            <h3><%= post.title %></h3>
-            <p><%= post.content %></p>
-
-            <!-- Comments Section -->
-            <h4>Comments:</h4>
+        <!-- List of Posts -->
+        <section id="post-list">
+            <h2>Recent Posts</h2>
             <ul>
-                <% post.comments.forEach(comment => { %>
-                    <li><%= comment %></li>
+                <!-- Loop through posts and display them here -->
+                <% posts.forEach(post => { %>
+                    <li>
+                        <a href="/forum/<%= post.id %>"><%= post.title %></a>
+                    </li>
                 <% }) %>
             </ul>
+        </section>
+    </main>
 
-            <!-- Comment Form -->
-            <form action="/forum/<%= post._id %>/comment" method="POST">
-                <label for="comment">Add a Comment</label>
-                <textarea name="comment" required></textarea>
-                <button type="submit">Post Comment</button>
-            </form>
-            <hr>
-        </div>
-    <% }) %>
+    <footer>
+        <p>Powered by Node.js and Nginx</p>
+    </footer>
 </body>
 </html>
+    
