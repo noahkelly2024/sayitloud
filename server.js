@@ -10,16 +10,37 @@ app.use(express.urlencoded({ extended: true })); // To parse form data
 // Serve static files (like CSS)
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Sample data (in-memory posts and comments)
-let posts = [
-    { id: 1, title: 'First Post', content: 'This is the first post on the forum!', comments: [] },
-    { id: 2, title: 'Second Post', content: 'Here is the second post, let’s discuss!', comments: [] }
-];
+// Set the directory for views (optional, but good practice)
+app.set('views', path.join(__dirname, 'views'));
+
+// Serve static files (e.g., CSS, images)
+app.use(express.static(path.join(__dirname, 'public')));
+
+// PAGES vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+
+// Home page route
+app.get('/', (req, res) => {
+    res.render('home');  // Render home.ejs
+});
+
+// About page route
+app.get('/about', (req, res) => {
+    res.render('about');  // Render about.ejs
+});
 
 // Route to render the forum page
 app.get('/forum', (req, res) => {
     res.render('forum', { posts });  // Render the forum page with posts
 });
+
+// PAGES ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+// Sample data (in-memory posts and comments)
+let posts = [
+    { id: 1, title: 'First Post', content: 'This is the first post on the forum!', comments: [] },
+    { id: 2, title: 'Second Post', content: 'Here is the second post, let’s discuss!', comments: [] }
+];
 
 // Route to handle creating a new post
 app.post('/forum', (req, res) => {
