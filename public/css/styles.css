@@ -1,0 +1,37 @@
+/* public/css/styles.css */
+
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    margin: 0;
+}
+
+nav ul {
+    display: flex;
+    list-style-type: none;
+    padding: 0;
+    background-color: #333;
+}
+
+nav ul li {
+    margin-right: 15px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    display: block;
+}
+
+nav ul li a:hover {
+    background-color: #575757;
+}
+
+h1 {
+    color: #333;
+}
+
+p {
+    font-size: 1.1em;
+}
