@@ -5,39 +5,46 @@
     padding: 0;
 }
 
-/* Basic Styles for the Forum */
+/* Body and Background */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
+    background-color: #e1ebf7;  /* Calm blue background */
     color: #333;
     line-height: 1.6;
 }
 
-/* Header Styles */
+/* Header and Navbar */
 header {
-    background-color: #333;
-    padding: 15px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    background-color: #003366; /* Darker blue for contrast */
+    color: #fff;
+    padding: 15px 0;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+header nav {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+}
+
 header nav a {
-    color: #fff;
+    color: #ffffff;
     text-decoration: none;
-    margin-right: 15px;
     font-size: 16px;
-    transition: color 0.3s ease;
+    font-weight: bold;
+    padding: 8px 15px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 header nav a:hover {
-    color: #007BFF;
+    background-color: #007BFF; /* Brighter blue on hover */
+    color: #fff;
 }
 
 /* Main Typography */
 h1, h2 {
-    color: #333;
+    color: #003366; /* Matching dark blue */
     margin-bottom: 10px;
 }
 
@@ -46,7 +53,7 @@ p {
     margin-bottom: 15px;
 }
 
-/* Main Content Styles */
+/* Main Content Styling */
 main {
     padding: 30px 20px;
     max-width: 800px;
@@ -121,7 +128,7 @@ form button:hover {
 footer {
     text-align: center;
     padding: 20px;
-    background-color: #333;
+    background-color: #003366;
     color: #fff;
     margin-top: 30px;
 }
