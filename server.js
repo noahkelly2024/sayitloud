@@ -136,19 +136,19 @@ const adminAuth = (req, res, next) => {
     }
 };
 
-// Handle admin login
 app.post('/admin/login', (req, res) => {
     const { username, password } = req.body;
-    const adminUsername = 'admin'; // Replace with a secure username
-    const adminPassword = 'admin'; // Replace with a secure password
-    
+    const adminUsername = 'admin';
+    const adminPassword = 'admin';
+
     if (username === adminUsername && password === adminPassword) {
-        req.session.isAdmin = true; // Set session variable
-        res.redirect('/admin'); // Redirect to admin dashboard
+        req.session.isAdmin = true;
+        res.redirect('/admin');
     } else {
-        res.send('Invalid credentials'); // Error message for wrong login
+        res.send('Invalid credentials'); // Or consider rendering the login page again with an error message
     }
 });
+
 
 // Admin Dashboard - only accessible if logged in
 app.get('/admin', adminAuth, async (req, res) => {
