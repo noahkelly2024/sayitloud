@@ -120,12 +120,6 @@ app.post('/forum/create-post', async (req, res) => {
 * ██║  ██║██████╔╝██║ ╚═╝ ██║██║██║ ╚████║
 * ╚═╝  ╚═╝╚═════╝ ╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝
 */
-// Set up session middleware
-app.use(session({
-    secret: 'yourSecretKey', // Replace with a strong secret key
-    resave: false,
-    saveUninitialized: false
-}));
 
 // Middleware for checking if the user is authenticated as admin
 const adminAuth = (req, res, next) => {
@@ -135,6 +129,19 @@ const adminAuth = (req, res, next) => {
         res.redirect('/admin/login'); // Redirect to login if not authenticated
     }
 };
+
+// Set up session middleware
+app.use(session({
+    secret: 'yourSecretKey', // Replace with a strong secret key
+    resave: false,
+    saveUninitialized: false
+}));
+
+// Define the login page route before other `/admin` routes
+app.get('/admin/login', (req, res) => {
+    res.render('adminLogin'); // Ensure this matches the name of your EJS login file
+});
+
 
 app.post('/admin/login', (req, res) => {
     const { username, password } = req.body;
