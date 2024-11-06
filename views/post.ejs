@@ -7,18 +7,36 @@
     <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-    <header>
-        <nav>
-            <a href="/">Home</a>
-            <a href="/about">About</a>
-            <a href="/forum">Forum</a>
-        </nav>
-    </header>
+    <!-- Include the Navbar -->
+    <%- include('partials/_navbar') %>
 
     <main>
         <h1><%= post.title %></h1>
         <p><%= post.content %></p>
         <p><small>Posted on: <%= post.createdAt.toDateString() %></small></p>
+
+        <section id="comments">
+            <h2>Comments</h2>
+            <ul>
+                <% if (post.comments && post.comments.length > 0) { %>
+                    <% post.comments.forEach(comment => { %>
+                        <li>
+                            <strong><%= comment.author %>:</strong> <%= comment.content %>
+                            <p><small>Posted on: <%= comment.createdAt.toDateString() %></small></p>
+                        </li>
+                    <% }) %>
+                <% } else { %>
+                    <p>No comments yet.</p>
+                <% } %>
+            </ul>
+
+            <h3>Add a Comment</h3>
+            <form action="/forum/<%= post._id %>/comments" method="POST">
+                <input type="text" name="author" placeholder="Your name" required>
+                <textarea name="content" placeholder="Write a comment..." required></textarea>
+                <button type="submit">Submit Comment</button>
+            </form>
+        </section>
 
         <a href="/forum">Back to Forum</a>
     </main>

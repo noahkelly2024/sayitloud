@@ -1,9 +1,15 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const postSchema = new mongoose.Schema({
+// Define the Post schema with a comments field
+const postSchema = new Schema({
     title: {
         type: String,
         required: true
+    },
+    author: {
+        type: String,
+        required: false
     },
     content: {
         type: String,
@@ -12,9 +18,15 @@ const postSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now
-    }
+    },
+    // New comments field as an array of objects
+    comments: [
+        {
+            author: { type: String, required: false },
+            content: { type: String, required: true },
+            createdAt: { type: Date, default: Date.now }
+        }
+    ]
 });
 
-const Post = mongoose.model('Post', postSchema);
-
-module.exports = Post;
+module.exports = mongoose.model('Post', postSchema);

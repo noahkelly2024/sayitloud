@@ -75,6 +75,31 @@ app.get('/forum/:id', async (req, res) => {
     }
 });
 
+// Route to add a comment to a post
+app.post('/forum/:id/comments', async (req, res) => {
+    try {
+        const postId = req.params.id;
+        const { author, content } = req.body;
+
+        // Find the post and add the comment to its comments array
+        const post = await Post.findById(postId);
+        if (!post) {
+            return res.status(404).send('Post not found');
+        }
+
+        // Add the comment to the post's comments array
+        post.comments.push({ author, content, createdAt: new Date() });
+        
+        // Save the updated post
+        await post.save();
+
+        // Redirect back to the individual post page
+        res.redirect(`/forum/${postId}`);
+    } catch (err) {
+        res.status(500).send('Error adding comment');
+    }
+});
+
 // Route to handle creating a new post
 app.post('/forum/create-post', async (req, res) => {
     const { title, content } = req.body;
