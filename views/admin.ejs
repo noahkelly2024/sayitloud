@@ -2,35 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title><%= title %></title>
-    <link rel="stylesheet" href="/css/admin.css"> <!-- Optional: create a separate CSS file for admin styling -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="/css/admin.css"> <!-- Link to your CSS file -->
 </head>
 <body>
-    <h1>Admin Dashboard</h1>
-    <h2>Manage Posts and Comments</h2>
-
-    <% posts.forEach(post => { %>
-        <div class="post">
-            <h3><%= post.title %></h3>
-            <p><%= post.content %></p>
-
-            <!-- Delete post button -->
-            <form action="/admin/delete-post/<%= post._id %>" method="POST">
-                <button type="submit">Delete Post</button>
-            </form>
-
-            <!-- Comments Section -->
-            <h4>Comments</h4>
-            <% post.comments.forEach(comment => { %>
-                <div class="comment">
-                    <p><strong><%= comment.author %></strong>: <%= comment.content %></p>
-                    <form action="/admin/delete-comment/<%= post._id %>/<%= comment._id %>" method="POST">
-                        <button type="submit">Delete Comment</button>
-                    </form>
-                </div>
-            <% }) %>
-        </div>
-        <hr>
-    <% }) %>
+    <h2>Admin Login</h2>
+    <form action="/admin/login" method="POST">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        
+        <button type="submit">Login</button>
+    </form>
+    <form action="/admin/logout" method="POST">
+        <button type="submit">Logout</button>
+    </form>
+    
 </body>
 </html>

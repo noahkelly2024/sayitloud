@@ -119,29 +119,50 @@ app.post('/forum/create-post', async (req, res) => {
 * ██║  ██║██████╔╝██║ ╚═╝ ██║██║██║ ╚████║
 * ╚═╝  ╚═╝╚═════╝ ╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝
 */
+// Set up session middleware
+app.use(session({
+    secret: 'yourSecretKey', // Replace with a strong secret key
+    resave: false,
+    saveUninitialized: false
+}));
 
-// Check if the user is authenticated as admin
+// Middleware for checking if the user is authenticated as admin
 const adminAuth = (req, res, next) => {
-    const { username, password } = req.body;
-    const adminUsername = 'admin'; // Replace with secure credentials in a real app
-    const adminPassword = 'admin'; // Replace with secure credentials in a real app
-    
-    if (username === adminUsername && password === adminPassword) {
-        next();  // Continue to the admin route if authenticated
+    if (req.session.isAdmin) {
+        next(); // User is authenticated as admin
     } else {
-        res.status(401).send('Unauthorized');
+        res.redirect('/admin/login'); // Redirect to login if not authenticated
     }
 };
 
+// Handle admin login
+app.post('/admin/login', (req, res) => {
+    const { username, password } = req.body;
+    const adminUsername = 'admin'; // Replace with a secure username
+    const adminPassword = 'admin'; // Replace with a secure password
+    
+    if (username === adminUsername && password === adminPassword) {
+        req.session.isAdmin = true; // Set session variable
+        res.redirect('/admin'); // Redirect to admin dashboard
+    } else {
+        res.send('Invalid credentials'); // Error message for wrong login
+    }
+});
 
-// Admin portal route (GET request to view the admin dashboard)
+// Admin Dashboard - only accessible if logged in
 app.get('/admin', adminAuth, async (req, res) => {
     try {
-        const posts = await Post.find().sort({ createdAt: -1 }); // Fetch all posts
+        const posts = await Post.find().sort({ createdAt: -1 });
         res.render('admin', { title: 'Admin Dashboard', posts });
     } catch (err) {
         res.status(500).send('Error fetching posts for admin');
     }
+});
+
+// Logout Route for Admin
+app.post('/admin/logout', (req, res) => {
+    req.session.destroy(); // Destroy session
+    res.redirect('/admin/login'); // Redirect to login page
 });
 
 // Route to delete a post by ID
