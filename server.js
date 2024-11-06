@@ -183,23 +183,27 @@ app.post('/admin/delete-post/:id', adminAuth, async (req, res) => {
     }
 });
 
-// Route to delete a comment from a post
 app.post('/admin/delete-comment/:postId/:commentId', adminAuth, async (req, res) => {
     try {
         const { postId, commentId } = req.params;
+        console.log("Post ID: ", postId); // Log to check if the correct post ID is received
+        console.log("Comment ID: ", commentId); // Log to check if the correct comment ID is received
+
         const post = await Post.findById(postId);
-        
+
         if (post) {
             post.comments.id(commentId).remove(); // Remove the comment
-            await post.save(); // Save the post
-            res.redirect('/admin'); // Redirect to the admin dashboard
+            await post.save(); // Save the updated post
+            res.redirect('/admin'); // Redirect back to the admin dashboard
         } else {
             res.status(404).send('Post not found');
         }
     } catch (err) {
+        console.error("Error deleting comment: ", err);  // Log the error for debugging
         res.status(500).send('Error deleting comment');
     }
 });
+
 
 /**
 * ███████╗████████╗ █████╗ ██████╗ ████████╗
