@@ -39,7 +39,7 @@ app.get('/forum', (req, res) => {
 
 // PAGES ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-const Post = require('./models/Post');  // Import the Post model
+const Post = require('./public/js/Post');  // Import the Post model
 
 // Route to get the forum page with posts
 app.get('/forum', async (req, res) => {
