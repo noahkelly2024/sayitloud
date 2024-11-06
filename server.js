@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const mongoose = require('mongoose');
+const Post = require('./public/js/Post'); // Import the Post model
 
 // Set EJS as the template engine
 app.set('view engine', 'ejs');
@@ -32,11 +33,18 @@ app.get('/about', (req, res) => {
     res.render('about');  // Render about.ejs
 });
 
-// Route to render the forum page
-app.get('/forum', (req, res) => {
-    res.render('forum', { title: 'Forum' });  // Render the forum page
+// Forum page route
+app.get('/forum', async (req, res) => {
+    try {
+        // Fetch all posts from the database, sorted by creation date
+        const posts = await Post.find().sort({ createdAt: -1 });
+        
+        // Render the forum page and pass the posts data to the view
+        res.render('forum', { title: 'Forum', posts: posts });
+    } catch (err) {
+        res.status(500).send('Error fetching posts');
+    }
 });
-
 // PAGES ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 const Post = require('./public/js/Post');  // Import the Post model

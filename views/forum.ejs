@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %> - Forum</title>
     <link rel="stylesheet" href="/styles.css">
-    <!-- Include the Navbar -->
-    <%- include('partials/_navbar') %>
 </head>
 <body>
     <header>
@@ -35,11 +33,15 @@
             <h2>Recent Posts</h2>
             <ul>
                 <!-- Loop through posts and display them here -->
-                <% posts.forEach(post => { %>
-                    <li>
-                        <a href="/forum/<%= post.id %>"><%= post.title %></a>
-                    </li>
-                <% }) %>
+                <% if (posts && posts.length > 0) { %>
+                    <% posts.forEach(post => { %>
+                        <li>
+                            <a href="/forum/<%= post._id %>"><%= post.title %></a>
+                        </li>
+                    <% }) %>
+                <% } else { %>
+                    <p>No posts yet!</p>
+                <% } %>
             </ul>
         </section>
     </main>
@@ -49,4 +51,3 @@
     </footer>
 </body>
 </html>
-    
