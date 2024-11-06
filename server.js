@@ -15,9 +15,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Set the directory for views (optional, but good practice)
 app.set('views', path.join(__dirname, 'views'));
 
-// Serve static files (e.g., CSS, images)
-app.use(express.static(path.join(__dirname, 'public')));
-
 // Set up mongoose connection (replace with your MongoDB URI if using MongoDB Atlas)
 mongoose.connect('mongodb://localhost:27017/forumDB');
 
@@ -46,8 +43,6 @@ app.get('/forum', async (req, res) => {
     }
 });
 // PAGES ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-const Post = require('./public/js/Post');  // Import the Post model
 
 // Route to get the forum page with posts
 app.get('/forum', async (req, res) => {
