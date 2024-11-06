@@ -54,6 +54,27 @@ app.get('/forum', async (req, res) => {
     }
 });
 
+// Route to view an individual post by ID
+app.get('/forum/:id', async (req, res) => {
+    try {
+        // Retrieve the post ID from the URL parameter
+        const postId = req.params.id;
+
+        // Find the post in the database by ID
+        const post = await Post.findById(postId);
+
+        // If the post does not exist, send a 404 error
+        if (!post) {
+            return res.status(404).send('Post not found');
+        }
+
+        // Render a new page for the individual post, passing the post data
+        res.render('post', { title: post.title, post: post });
+    } catch (err) {
+        res.status(500).send('Error retrieving post');
+    }
+});
+
 // Route to handle creating a new post
 app.post('/forum/create-post', async (req, res) => {
     const { title, content } = req.body;
