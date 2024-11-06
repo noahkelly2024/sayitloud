@@ -1,3 +1,12 @@
+/**
+* ███████╗███████╗████████╗██╗   ██╗██████╗ 
+* ██╔════╝██╔════╝╚══██╔══╝██║   ██║██╔══██╗
+* ███████╗█████╗     ██║   ██║   ██║██████╔╝
+* ╚════██║██╔══╝     ██║   ██║   ██║██╔═══╝ 
+* ███████║███████╗   ██║   ╚██████╔╝██║     
+* ╚══════╝╚══════╝   ╚═╝    ╚═════╝ ╚═╝     
+*/
+
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
@@ -25,6 +34,14 @@ mongoose.connect('mongodb://localhost:27017/forumDB', {
     console.log("Error connecting to MongoDB:", err);
 });
 
+/**
+* ██████╗  ██████╗ ██╗   ██╗████████╗███████╗███████╗
+* ██╔══██╗██╔═══██╗██║   ██║╚══██╔══╝██╔════╝██╔════╝
+* ██████╔╝██║   ██║██║   ██║   ██║   █████╗  ███████╗
+* ██╔══██╗██║   ██║██║   ██║   ██║   ██╔══╝  ╚════██║
+* ██║  ██║╚██████╔╝╚██████╔╝   ██║   ███████╗███████║
+* ╚═╝  ╚═╝ ╚═════╝  ╚═════╝    ╚═╝   ╚══════╝╚══════╝
+*/
 // Home page route
 app.get('/', (req, res) => {
     res.render('home');  // Render home.ejs
@@ -94,6 +111,75 @@ app.post('/forum/create-post', async (req, res) => {
     }
 });
 
+/**
+*  █████╗ ██████╗ ███╗   ███╗██╗███╗   ██╗
+* ██╔══██╗██╔══██╗████╗ ████║██║████╗  ██║
+* ███████║██║  ██║██╔████╔██║██║██╔██╗ ██║
+* ██╔══██║██║  ██║██║╚██╔╝██║██║██║╚██╗██║
+* ██║  ██║██████╔╝██║ ╚═╝ ██║██║██║ ╚████║
+* ╚═╝  ╚═╝╚═════╝ ╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝
+*/
+
+// Admin portal route (GET request to view the admin dashboard)
+app.get('/admin', adminAuth, async (req, res) => {
+    try {
+        const posts = await Post.find().sort({ createdAt: -1 }); // Fetch all posts
+        res.render('admin', { title: 'Admin Dashboard', posts });
+    } catch (err) {
+        res.status(500).send('Error fetching posts for admin');
+    }
+});
+
+// Route to delete a post by ID
+app.post('/admin/delete-post/:id', adminAuth, async (req, res) => {
+    try {
+        await Post.findByIdAndDelete(req.params.id); // Delete the post
+        res.redirect('/admin'); // Redirect back to the admin dashboard
+    } catch (err) {
+        res.status(500).send('Error deleting post');
+    }
+});
+
+// Route to delete a comment from a post
+app.post('/admin/delete-comment/:postId/:commentId', adminAuth, async (req, res) => {
+    try {
+        const { postId, commentId } = req.params;
+        const post = await Post.findById(postId);
+        
+        if (post) {
+            post.comments.id(commentId).remove(); // Remove the comment
+            await post.save(); // Save the post
+            res.redirect('/admin'); // Redirect to the admin dashboard
+        } else {
+            res.status(404).send('Post not found');
+        }
+    } catch (err) {
+        res.status(500).send('Error deleting comment');
+    }
+});
+
+
+// Check if the user is authenticated as admin
+const adminAuth = (req, res, next) => {
+    const { username, password } = req.body;
+    const adminUsername = 'admin'; // Replace with secure credentials in a real app
+    const adminPassword = 'admin'; // Replace with secure credentials in a real app
+    
+    if (username === adminUsername && password === adminPassword) {
+        next();  // Continue to the admin route if authenticated
+    } else {
+        res.status(401).send('Unauthorized');
+    }
+};
+
+/**
+* ███████╗████████╗ █████╗ ██████╗ ████████╗
+* ██╔════╝╚══██╔══╝██╔══██╗██╔══██╗╚══██╔══╝
+* ███████╗   ██║   ███████║██████╔╝   ██║   
+* ╚════██║   ██║   ██╔══██║██╔══██╗   ██║   
+* ███████║   ██║   ██║  ██║██║  ██║   ██║   
+* ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   
+*/
 // Start the server on port 3001
 const PORT = 3001;
 app.listen(PORT, () => {
