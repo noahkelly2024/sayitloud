@@ -1,66 +1,64 @@
-// Toggle reply box for a specific comment
-function toggleReplyBox(postId, commentId) {
-    const replyInputContainer = document.getElementById(`reply-input-${postId}-${commentId}`);
-    replyInputContainer.style.display = replyInputContainer.style.display === 'none' ? 'block' : 'none';
-}
+// Fetch all posts and display them
+async function fetchPosts() {
+    const response = await fetch('/api/posts');
+    const posts = await response.json();
+    const postsContainer = document.getElementById('postsContainer');
+    postsContainer.innerHTML = '';
 
-// Submit a new comment
-function submitComment(postId) {
-    const commentInput = document.getElementById(`comment-input-${postId}`);
-    const commentText = commentInput.value;
-
-    if (commentText.trim() === "") {
-        alert("Comment cannot be empty!");
-        return;
-    }
-
-    fetch(`/posts/${postId}/comment`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ commentText, commentAuthor: "Anonymous" })
-    })
-    .then(response => response.json())
-    .then(data => {
-        commentInput.value = ''; // Reset input field
-
-        const commentsList = document.getElementById(`comments-list-${postId}`);
-        const newCommentItem = document.createElement('li');
-        newCommentItem.innerHTML = `<strong>${data.commentAuthor}:</strong> ${data.commentText}
-            <button class="reply-button" onclick="toggleReplyBox('${postId}', '${data.commentId}')">Reply</button>
-            <div class="reply-input-container" id="reply-input-${postId}-${data.commentId}" style="display: none;">
-                <input type="text" class="reply-input" placeholder="Your reply here...">
-                <button class="submit-reply-button" onclick="submitReply('${postId}', '${data.commentId}')">Submit</button>
+    posts.forEach(post => {
+        const postDiv = document.createElement('div');
+        postDiv.classList.add('post');
+        postDiv.innerHTML = `
+            <p>${post.content}</p>
+            <small>${new Date(post.timestamp).toLocaleString()}</small>
+            <div class="comments">
+                ${post.comments.map(comment => `
+                    <div class="comment">
+                        <p>${comment.content}</p>
+                        <small>${new Date(comment.timestamp).toLocaleString()}</small>
+                    </div>
+                `).join('')}
             </div>
-            <ul class="reply-list" id="reply-list-${data.commentId}"></ul>`;
-        commentsList.appendChild(newCommentItem);
-    })
-    .catch(error => console.error('Error:', error));
+            <textarea placeholder="Add a comment..." onkeypress="handleCommentInput(event, ${post.id})"></textarea>
+        `;
+        postsContainer.appendChild(postDiv);
+    });
 }
 
-// Submit a reply to a comment
-function submitReply(postId, commentId) {
-    const replyInput = document.querySelector(`#reply-input-${postId}-${commentId} .reply-input`);
-    const replyText = replyInput.value;
+// Create a new post
+async function createPost() {
+    const content = document.getElementById('postContent').value;
+    if (!content) return alert('Post content cannot be empty');
 
-    if (replyText.trim() === "") {
-        alert("Reply cannot be empty!");
-        return;
-    }
-
-    fetch(`/posts/${postId}/comment/${commentId}/reply`, {
+    await fetch('/api/posts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ replyText, replyAuthor: "Anonymous" })
-    })
-    .then(response => response.json())
-    .then(data => {
-        replyInput.value = ''; // Reset input field
-        const replyList = document.getElementById(`reply-list-${commentId}`);
-        const newReplyItem = document.createElement('li');
-        newReplyItem.style.marginLeft = '20px';
-        newReplyItem.style.fontStyle = 'italic';
-        newReplyItem.innerHTML = `<strong>${data.replyAuthor}:</strong> ${data.replyText}`;
-        replyList.appendChild(newReplyItem);
-    })
-    .catch(error => console.error('Error:', error));
+        body: JSON.stringify({ content })
+    });
+    document.getElementById('postContent').value = '';
+    fetchPosts(); // Refresh posts list
 }
+
+// Add a comment to a specific post
+async function addComment(postId, content) {
+    await fetch(`/api/posts/${postId}/comments`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content })
+    });
+    fetchPosts(); // Refresh posts list
+}
+
+// Handle comment input
+function handleCommentInput(event, postId) {
+    if (event.key === 'Enter') {
+        const content = event.target.value;
+        if (content) {
+            addComment(postId, content);
+            event.target.value = ''; // Clear comment input
+        }
+    }
+}
+
+// Initial fetch
+fetchPosts();
