@@ -18,10 +18,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Set up mongoose connection (replace with your MongoDB URI if using MongoDB Atlas)
-mongoose.connect('mongodb://localhost:27017/forumDB', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-});
+mongoose.connect('mongodb://localhost:27017/forumDB');
 
 // PAGES vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 
