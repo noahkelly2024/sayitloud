@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!-- Include the Navbar -->
+    <%- include('partials/_navbar') %>
     <title>Online Users</title>
     <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
-    <!-- Include the Navbar -->
-    <%- include('partials/_navbar') %>
     <h1>Current Online Users: <span id="userCount">0</span></h1>
     <script>
         const socket = io();
