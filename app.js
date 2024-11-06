@@ -41,16 +41,16 @@ app.use(express.json());
 
 // const Post = mongoose.model('Post', postSchema);
 
-// // Route to render homepage with all posts
-// app.get('/', async (req, res) => {
-//     try {
-//         const posts = await Post.find({});
-//         res.render('home', { posts });
-//     } catch (err) {
-//         console.error(err);
-//         res.status(500).send("Error retrieving posts");
-//     }
-// });
+// Route to render homepage with all posts
+app.get('/views/home', async (req, res) => {
+    try {
+        const posts = await Post.find({});
+        res.render('home', { posts });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error retrieving posts");
+    }
+});
 
 // // Route to handle new post submissions
 // app.post('/new-post', async (req, res) => {
