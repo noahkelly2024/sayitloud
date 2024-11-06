@@ -132,7 +132,7 @@ const adminAuth = (req, res, next) => {
 
 // Set up session middleware
 app.use(session({
-    secret: 'yourSecretKey', // Replace with a strong secret key
+    secret: 'EbDAEAAAAAKAAAABj/9XHMAAADtABBDiBHmwWcBJ0DngKfAX4K397d3NsOAEELAAAAAAA4AAAARP/1dVQAAAPkAEIOEEKeAp8Beg', // Replace with a strong secret key
     resave: false,
     saveUninitialized: false
 }));
@@ -145,8 +145,8 @@ app.get('/admin/login', (req, res) => {
 
 app.post('/admin/login', (req, res) => {
     const { username, password } = req.body;
-    const adminUsername = 'admin';
-    const adminPassword = 'admin';
+    const adminUsername = 'pixelking385';
+    const adminPassword = 'Powered by Node.js, Nginx, MongoDB, Cloudflare, and Google Cloud';
 
     if (username === adminUsername && password === adminPassword) {
         req.session.isAdmin = true;
