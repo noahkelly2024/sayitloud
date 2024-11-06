@@ -8,6 +8,7 @@
 */
 
 const express = require('express');
+const session = require('express-session');
 const path = require('path');
 const mongoose = require('mongoose');
 const Post = require('./public/js/Post');  // Import the Post model
