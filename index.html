@@ -6,6 +6,8 @@
     <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
+    <!-- Include the Navbar -->
+    <%- include('partials/_navbar') %>
     <h1>Current Online Users: <span id="userCount">0</span></h1>
     <script>
         const socket = io();
