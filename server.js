@@ -3,11 +3,36 @@ const path = require('path');
 const app = express();
 const mongoose = require('mongoose');
 const Post = require('./public/js/Post'); // Import the Post model
+const http = require('http');
+const socketIo = require('socket.io');
+const server = http.createServer(app);
+const io = socketIo(server);
 
 // Set EJS as the template engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: true })); // To parse form data
+
+let onlineUsers = 0;
+
+io.on('connection', (socket) => {
+    onlineUsers++;
+    io.emit('onlineUsers', onlineUsers); // Send the updated count to all connected clients
+
+    socket.on('disconnect', () => {
+        onlineUsers--;
+        io.emit('onlineUsers', onlineUsers);
+    });
+});
+
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/index.html');
+});
+
+server.listen(3000, () => {
+    console.log('Server running on port 3000');
+});
+
 
 // Serve static files (like CSS)
 app.use(express.static(path.join(__dirname, 'public')));
